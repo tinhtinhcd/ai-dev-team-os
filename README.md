@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Dev Team OS
 
-## Getting Started
+Local-first development workspace. Sprint 1 delivers the **Brain Panel** for viewing and editing project docs.
 
-First, run the development server:
+## Quick Start
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) and click **Open Brain Panel** or go to [http://localhost:3000/brain](http://localhost:3000/brain).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Troubleshooting:**
+- **"Failed to fetch"** — Restart the dev server, or open /brain directly in the address bar.
+- **Page keeps loading** — Try `npm run dev:webpack` (Webpack instead of Turbopack), or open http://localhost:3000/brain directly.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Brain Panel (/brain)
 
-## Learn More
+- **Left:** File list — PRODUCT.md, BACKLOG.md, DECISIONS.md, STACK.md
+- **Center:** Markdown editor
+- **Right:** Live markdown preview
 
-To learn more about Next.js, take a look at the following resources:
+### How to Test
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Run `npm run dev`
+2. Open http://localhost:3000/brain
+3. Select a file (e.g. PRODUCT.md)
+4. Edit the content in the center pane
+5. Click **Save** — status shows "Saving…" then "Saved"
+6. Verify on disk: `./brain/PRODUCT.md` (or the file you edited) reflects your changes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Files
 
-## Deploy on Vercel
+Brain docs live in `./brain/`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `PRODUCT.md` — Vision, goals, success metrics
+- `BACKLOG.md` — To do, in progress, done
+- `DECISIONS.md` — Architecture decision records
+- `STACK.md` — Tech stack inventory
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+If the `brain` folder or any file is missing, they are created automatically on first load with starter templates.
+
+## Handoff Workflow
+
+`./handoff/` contains task and result templates:
+- **TASK.md** — PM/Architect task brief
+- **RESULT.md** — Engineer result summary
+
+Workflow: Claude writes TASK.md → Cursor implements → writes RESULT.md → commit.
+
+## Tech Stack
+
+- Next.js 16 (App Router)
+- Tailwind CSS
+- react-markdown
+- Node `fs` for local read/write (no DB, no auth, no cloud)

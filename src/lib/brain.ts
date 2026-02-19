@@ -1,0 +1,105 @@
+import fs from "fs";
+import path from "path";
+
+const BRAIN_DIR = "brain";
+const BRAIN_FILES = ["PRODUCT.md", "BACKLOG.md", "DECISIONS.md", "STACK.md"] as const;
+export type BrainFile = (typeof BRAIN_FILES)[number];
+
+const TEMPLATES: Record<BrainFile, string> = {
+  "PRODUCT.md": `# Product
+
+## Vision
+_What are we building?_
+
+## Goals
+- 
+- 
+- 
+
+## Success Metrics
+- 
+`,
+
+  "BACKLOG.md": `# Backlog
+
+## To Do
+- [ ] 
+- [ ] 
+- [ ] 
+
+## In Progress
+- [ ] 
+
+## Done
+- [x] 
+`,
+
+  "DECISIONS.md": `# Architecture Decision Records
+
+## ADR-001: _Title_
+**Status:** Proposed | Accepted | Deprecated
+**Date:** YYYY-MM-DD
+
+### Context
+_What is the issue?_
+
+### Decision
+_What did we decide?_
+
+### Consequences
+_What are the trade-offs?_
+`,
+
+  "STACK.md": `# Tech Stack
+
+## Core
+- **Runtime:** 
+- **Framework:** 
+- **Language:** 
+
+## Data
+- **Database:** 
+- **Cache:** 
+
+## DevOps
+- **Hosting:** 
+- **CI/CD:** 
+`,
+};
+
+function getBrainDir(): string {
+  return path.join(process.cwd(), BRAIN_DIR);
+}
+
+function getFilePath(filename: BrainFile): string {
+  return path.join(getBrainDir(), filename);
+}
+
+export function ensureBrainExists(): void {
+  const dir = getBrainDir();
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  for (const file of BRAIN_FILES) {
+    const filePath = getFilePath(file);
+    if (!fs.existsSync(filePath)) {
+      fs.writeFileSync(filePath, TEMPLATES[file], "utf-8");
+    }
+  }
+}
+
+export function readBrainFile(filename: BrainFile): string {
+  ensureBrainExists();
+  const filePath = getFilePath(filename);
+  return fs.readFileSync(filePath, "utf-8");
+}
+
+export function writeBrainFile(filename: BrainFile, content: string): void {
+  ensureBrainExists();
+  const filePath = getFilePath(filename);
+  fs.writeFileSync(filePath, content, "utf-8");
+}
+
+export function getBrainFiles(): BrainFile[] {
+  return [...BRAIN_FILES];
+}
