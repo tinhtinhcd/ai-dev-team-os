@@ -75,6 +75,33 @@ If the `brain` folder or any file is missing, they are created automatically on 
 5. Click **Save** — status shows "Saving…" then "Saved"
 6. Verify on disk: `./brain/PRODUCT.md` (or the file you edited) reflects your changes
 
+## Slack Reporting (TIN-11)
+
+Agents report status changes to Slack via the gateway API. Format:
+
+```
+[ISSUE-ID] Status: <state>
+Owner: <assignee>
+Update: <1–2 lines>
+Next: <next step>
+```
+
+**Rules:** Same thread per issue, no duplicates, 3s debounce, no flooding.
+
+### Setup
+
+1. Copy `.env.example` to `.env`
+2. Set `SLACK_BOT_TOKEN` (from [Slack API](https://api.slack.com/apps) → OAuth → `chat:write`)
+3. Set `SLACK_CHANNEL` (channel ID or name, e.g. `C0ABQLYUE0K`)
+
+### API
+
+```bash
+curl -X POST http://localhost:3000/api/report \
+  -H "Content-Type: application/json" \
+  -d '{"issueId":"TIN-11","state":"In Progress","assignee":"Cursor","update":"Implemented format and anti-spam","next":"Test in Slack"}'
+```
+
 ## Handoff Workflow
 
 `./handoff/` contains task and result templates:
@@ -99,8 +126,9 @@ Workflow: PM writes TASK.md → Engineer implements → writes RESULT.md → com
 ├── handoff/         # Task and result templates
 ├── src/
 │   ├── app/         # Next.js App Router pages
+│   │   ├── api/     # API routes (e.g. /api/report)
 │   │   ├── brain/   # Brain Panel page and actions
 │   │   └── ...
-│   └── lib/         # Utilities (brain.ts, observability)
+│   └── lib/         # Utilities (brain.ts, linear.ts, slack-reporting.ts)
 └── public/          # Static assets
 ```
