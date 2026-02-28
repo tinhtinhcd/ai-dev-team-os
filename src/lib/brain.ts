@@ -3,6 +3,13 @@ import path from "path";
 
 const BRAIN_DIR = "brain";
 const BRAIN_FILES = ["PRODUCT.md", "BACKLOG.md", "DECISIONS.md", "STACK.md", "TEAMS.md"] as const;
+const BRAIN_FILES = [
+  "PRODUCT.md",
+  "BACKLOG.md",
+  "DECISIONS.md",
+  "STACK.md",
+  "LINEAR_FAMILIARIZATION.md",
+] as const;
 export type BrainFile = (typeof BRAIN_FILES)[number];
 
 const TEMPLATES: Record<BrainFile, string> = {
@@ -87,6 +94,21 @@ _List your teams and what they own._
 - **Invite link** — Share a unique link for self-service signup
 
 _Configure invites in your [settings](http://linear.app/settings/members)._
+  "LINEAR_FAMILIARIZATION.md": `# Linear Platform Familiarization
+
+## Overview
+Linear is a modern project management and issue-tracking platform for software teams.
+
+## Key Concepts
+- **Teams** — Organize work by team
+- **Issues** — Track tasks with IDs, statuses, and titles
+- **Cycles** — Time-boxed sprints
+- **Projects** — Grouped initiatives
+
+## Resources
+- [Linear docs](https://linear.app/docs)
+- [Join Slack](https://linear.app/join-slack)
+- Press \`?\` in Linear for help
 `,
 };
 

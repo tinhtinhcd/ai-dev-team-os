@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
-import { loadBrainFile, saveBrainFile } from "./actions";
+import { loadBrainFile, saveBrainFile, importFromLinear } from "./actions";
 import type { BrainFile } from "@/lib/brain";
 
 const BRAIN_FILES: BrainFile[] = [
@@ -11,6 +11,7 @@ const BRAIN_FILES: BrainFile[] = [
   "DECISIONS.md",
   "STACK.md",
   "TEAMS.md",
+  "LINEAR_FAMILIARIZATION.md",
 ];
 
 export default function BrainPage() {
@@ -21,6 +22,13 @@ export default function BrainPage() {
     "idle"
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [importOpen, setImportOpen] = useState(false);
+  const [importApiKey, setImportApiKey] = useState("");
+  const [importMerge, setImportMerge] = useState(true);
+  const [importStatus, setImportStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [importMessage, setImportMessage] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -42,6 +50,9 @@ export default function BrainPage() {
       cancelled = true;
     };
   }, [selected]);
+    const id = setTimeout(() => void loadFile(selected), 0);
+    return () => clearTimeout(id);
+  }, [selected, loadFile]);
 
   const handleSave = async () => {
     setStatus("saving");
@@ -56,13 +67,48 @@ export default function BrainPage() {
     }
   };
 
+  const handleImport = async () => {
+    if (!importApiKey.trim()) {
+      setImportStatus("error");
+      setImportMessage("Please enter your Linear API key");
+      return;
+    }
+    setImportStatus("loading");
+    setImportMessage(null);
+    const result = await importFromLinear(importApiKey.trim(), importMerge);
+    if (result.success) {
+      setImportStatus("success");
+      setImportMessage(
+        `Imported ${result.importedCount ?? 0} issues into BACKLOG.md`
+      );
+      setSelected("BACKLOG.md");
+      loadFile("BACKLOG.md");
+      setTimeout(() => {
+        setImportOpen(false);
+        setImportStatus("idle");
+        setImportMessage(null);
+      }, 1500);
+    } else {
+      setImportStatus("error");
+      setImportMessage(result.error ?? "Import failed");
+    }
+  };
+
   return (
     <div className="flex h-screen flex-col bg-zinc-950 text-zinc-100">
       {/* Header */}
       <header className="flex shrink-0 items-center justify-between border-b border-zinc-800 bg-zinc-900/80 px-4 py-3">
-        <h1 className="text-lg font-semibold tracking-tight">
-          AI Dev Team OS · Brain
-        </h1>
+        <div className="flex items-center gap-4">
+          <h1 className="text-lg font-semibold tracking-tight">
+            AI Dev Team OS · Brain
+          </h1>
+          <a
+            href="/integrations"
+            className="text-sm text-zinc-400 hover:text-zinc-200 transition-colors"
+          >
+            Integrations
+          </a>
+        </div>
         <div className="flex items-center gap-3">
           <span
             className={`text-sm font-medium ${
@@ -84,6 +130,12 @@ export default function BrainPage() {
                   : "Unsaved"}
           </span>
           <button
+            onClick={() => setImportOpen(true)}
+            className="rounded-lg border border-zinc-600 bg-zinc-800/50 px-4 py-2 text-sm font-medium text-zinc-200 hover:bg-zinc-700/50"
+          >
+            Import from Linear
+          </button>
+          <button
             onClick={handleSave}
             disabled={status === "saving"}
             className="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-500 disabled:opacity-50"
@@ -92,6 +144,80 @@ export default function BrainPage() {
           </button>
         </div>
       </header>
+
+      {/* Import from Linear modal */}
+      {importOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+          onClick={() => importStatus !== "loading" && setImportOpen(false)}
+        >
+          <div
+            className="w-full max-w-md rounded-xl border border-zinc-700 bg-zinc-900 p-6 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="mb-4 text-lg font-semibold text-zinc-100">
+              Import from Linear
+            </h2>
+            <p className="mb-4 text-sm text-zinc-400">
+              Sync your Linear issues into BACKLOG.md. Get your API key from{" "}
+              <a
+                href="https://linear.app/settings/api"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-violet-400 hover:underline"
+              >
+                Linear Settings → API
+              </a>
+              .
+            </p>
+            <input
+              type="password"
+              placeholder="Linear API key (lin_api_...)"
+              value={importApiKey}
+              onChange={(e) => setImportApiKey(e.target.value)}
+              className="mb-4 w-full rounded-lg border border-zinc-600 bg-zinc-800 px-3 py-2 text-sm text-zinc-200 placeholder-zinc-500 focus:border-violet-500 focus:outline-none"
+              disabled={importStatus === "loading"}
+            />
+            <label className="mb-4 flex items-center gap-2 text-sm text-zinc-300">
+              <input
+                type="checkbox"
+                checked={importMerge}
+                onChange={(e) => setImportMerge(e.target.checked)}
+                className="rounded border-zinc-600"
+              />
+              Merge with existing backlog (keep local items)
+            </label>
+            {importMessage && (
+              <p
+                className={`mb-4 text-sm ${
+                  importStatus === "error"
+                    ? "text-red-400"
+                    : importStatus === "success"
+                      ? "text-emerald-400"
+                      : "text-zinc-400"
+                }`}
+              >
+                {importMessage}
+              </p>
+            )}
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setImportOpen(false)}
+                className="rounded-lg px-4 py-2 text-sm font-medium text-zinc-400 hover:bg-zinc-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleImport}
+                disabled={importStatus === "loading"}
+                className="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-500 disabled:opacity-50"
+              >
+                {importStatus === "loading" ? "Importing…" : "Import"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main layout */}
       <main className="flex flex-1 min-h-0">

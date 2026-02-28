@@ -5,6 +5,7 @@ A local-first development workspace for managing product vision, backlog, archit
 ## Overview
 
 - **Brain Panel** — View and edit project docs (PRODUCT.md, BACKLOG.md, DECISIONS.md, STACK.md, TEAMS.md) with a markdown editor and live preview
+- **Import from Linear** — Sync Linear issues into BACKLOG.md (To Do, In Progress, Done)
 - **Handoff workflow** — Task and result templates for PM → Engineer collaboration
 - **Local-first** — Uses Node `fs` for read/write; files live in `./brain/` and `./handoff/`
 
@@ -56,6 +57,14 @@ Docs live in `./brain/`:
 | `TEAMS.md` | Team structure, roles, and member invites |
 
 If the `brain` folder or any file is missing, they are created automatically on first load with starter templates.
+
+### Import from Linear
+
+1. Open http://localhost:3000/brain
+2. Click **Import from Linear** in the header
+3. Enter your Linear API key (from [Linear Settings → API](https://linear.app/settings/api))
+4. Choose to replace or merge with existing backlog
+5. Click **Import** — issues sync into BACKLOG.md (To Do, In Progress, Done)
 
 ### How to Test
 
