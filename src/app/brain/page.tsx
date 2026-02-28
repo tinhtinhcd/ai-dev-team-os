@@ -10,6 +10,7 @@ const BRAIN_FILES: BrainFile[] = [
   "BACKLOG.md",
   "DECISIONS.md",
   "STACK.md",
+  "LINEAR_FAMILIARIZATION.md",
 ];
 
 export default function BrainPage() {
