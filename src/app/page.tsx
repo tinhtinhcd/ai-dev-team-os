@@ -7,7 +7,8 @@ export default function Home() {
         </h1>
         <p className="max-w-md text-zinc-400">
           Local-first development workspace. Manage product vision, backlog,
-          decisions, and tech stack in one place.
+          decisions, and tech stack in one place. Import your data from Linear
+          to sync issues into your backlog.
         </p>
         <a
           href="/brain"
