@@ -92,10 +92,23 @@ Workflow: PM writes TASK.md → Engineer implements → writes RESULT.md → com
 - **react-markdown** — Markdown rendering
 - **Node `fs`** — Local file read/write (no DB, no auth, no cloud)
 
+## Gateway Service (`/gateway`)
+
+Event-driven gateway connecting Slack, Linear, and Cursor. See [gateway/README.md](gateway/README.md) for setup.
+
+- **Slack** — Receives mentions, creates Linear issues, posts updates to threads
+- **Linear** — Webhooks post issue updates back to the correct Slack thread
+- **SQLite** — Stores `linearIssueId ↔ slackChannelId ↔ slackThreadTs` mapping
+
+```bash
+cd gateway && npm install && npm run dev
+```
+
 ## Project Structure
 
 ```
 ├── brain/           # Project docs (PRODUCT, BACKLOG, DECISIONS, STACK, TEAMS)
+├── gateway/        # Slack ↔ Linear gateway service
 ├── handoff/         # Task and result templates
 ├── src/
 │   ├── app/         # Next.js App Router pages
