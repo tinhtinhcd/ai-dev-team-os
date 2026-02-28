@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { loadBrainFile, saveBrainFile, importFromLinear } from "./actions";
 import type { BrainFile } from "@/lib/brain";
@@ -10,6 +10,7 @@ const BRAIN_FILES: BrainFile[] = [
   "BACKLOG.md",
   "DECISIONS.md",
   "STACK.md",
+  "TEAMS.md",
   "LINEAR_FAMILIARIZATION.md",
 ];
 
@@ -29,22 +30,26 @@ export default function BrainPage() {
   >("idle");
   const [importMessage, setImportMessage] = useState<string | null>(null);
 
-  const loadFile = useCallback(
-    async (filename: BrainFile) => {
-      try {
-        const data = await loadBrainFile(filename);
-        setContent(data);
-        setStatus("idle");
-        setErrorMessage(null);
-      } catch (e) {
-        setStatus("error");
-        setErrorMessage(e instanceof Error ? e.message : "Failed to load");
-      }
-    },
-    []
-  );
-
   useEffect(() => {
+    let cancelled = false;
+    loadBrainFile(selected)
+      .then((data) => {
+        if (!cancelled) {
+          setContent(data);
+          setStatus("idle");
+          setErrorMessage(null);
+        }
+      })
+      .catch((e) => {
+        if (!cancelled) {
+          setStatus("error");
+          setErrorMessage(e instanceof Error ? e.message : "Failed to load");
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [selected]);
     const id = setTimeout(() => void loadFile(selected), 0);
     return () => clearTimeout(id);
   }, [selected, loadFile]);
