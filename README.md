@@ -4,7 +4,7 @@ A local-first development workspace for managing product vision, backlog, archit
 
 ## Overview
 
-- **Brain Panel** — View and edit project docs (PRODUCT.md, BACKLOG.md, DECISIONS.md, STACK.md) with a markdown editor and live preview
+- **Brain Panel** — View and edit project docs (PRODUCT.md, BACKLOG.md, DECISIONS.md, STACK.md, TEAMS.md) with a markdown editor and live preview
 - **Handoff workflow** — Task and result templates for PM → Engineer collaboration
 - **Local-first** — Uses Node `fs` for read/write; files live in `./brain/` and `./handoff/`
 
@@ -39,7 +39,7 @@ Open [http://localhost:3000](http://localhost:3000) and click **Open Brain Panel
 
 ## Brain Panel (`/brain`)
 
-- **Left:** File list — PRODUCT.md, BACKLOG.md, DECISIONS.md, STACK.md
+- **Left:** File list — PRODUCT.md, BACKLOG.md, DECISIONS.md, STACK.md, TEAMS.md
 - **Center:** Markdown editor
 - **Right:** Live markdown preview
 
@@ -53,6 +53,7 @@ Docs live in `./brain/`:
 | `BACKLOG.md` | To do, in progress, done |
 | `DECISIONS.md` | Architecture decision records |
 | `STACK.md` | Tech stack inventory |
+| `TEAMS.md` | Team structure, roles, and member invites |
 
 If the `brain` folder or any file is missing, they are created automatically on first load with starter templates.
 
@@ -85,7 +86,7 @@ Workflow: PM writes TASK.md → Engineer implements → writes RESULT.md → com
 ## Project Structure
 
 ```
-├── brain/           # Project docs (PRODUCT, BACKLOG, DECISIONS, STACK)
+├── brain/           # Project docs (PRODUCT, BACKLOG, DECISIONS, STACK, TEAMS)
 ├── handoff/         # Task and result templates
 ├── src/
 │   ├── app/         # Next.js App Router pages
