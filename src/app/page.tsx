@@ -9,12 +9,20 @@ export default function Home() {
           Local-first development workspace. Manage product vision, backlog,
           decisions, and tech stack in one place.
         </p>
-        <a
-          href="/brain"
-          className="rounded-lg bg-violet-600 px-6 py-3 font-medium text-white hover:bg-violet-500 transition-colors"
-        >
-          Open Brain Panel
-        </a>
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <a
+            href="/brain"
+            className="rounded-lg bg-violet-600 px-6 py-3 font-medium text-white hover:bg-violet-500 transition-colors"
+          >
+            Open Brain Panel
+          </a>
+          <a
+            href="/integrations"
+            className="rounded-lg border border-zinc-600 px-6 py-3 font-medium text-zinc-200 hover:bg-zinc-800 transition-colors"
+          >
+            Connect your tools
+          </a>
+        </div>
       </main>
     </div>
   );
