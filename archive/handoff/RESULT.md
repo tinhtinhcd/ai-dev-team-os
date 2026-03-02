@@ -1,22 +1,29 @@
 # Result Summary
 
 **Author:** Engineer (Cursor)  
-**Completed:** 2025-02-28  
-**Task:** TIN-6 — Create a test task and assign it to Cursor
+**Completed:** 2025-03-02  
+**Task:** TIN-8 — Slack app configuration checklist
 
 ## What Was Done
-Resolved the TIN-6 test task by confirming the Linear → Cursor workflow. The task was created in Linear, assigned to Cursor, and Cursor successfully received and processed it. Documented the completion following the handoff workflow.
+Created Slack app setup checklist covering required scopes, event subscriptions, thread-only reply behavior, and step-by-step setup. Target channel for MVP: #team-leo.
 
 ## Deliverables
-- Updated `handoff/TASK.md` — TIN-6 task brief documented
-- Updated `handoff/RESULT.md` — Completion summary
-- Updated `brain/BACKLOG.md` — TIN-6 marked done
+- **Created** `docs/SLACK_APP_SETUP.md` — Full checklist with:
+  - Required scopes: chat:write, app_mentions:read, channels:read
+  - Event subscription: app_mention
+  - Reply behavior: thread-only (with thread_ts example)
+  - Step-by-step setup (create app → OAuth scopes → events → install → invite)
+  - Verification and copy-paste checklist
+- **Updated** `README.md` — Added Setup Guides section linking to Slack and Linear setup docs
+- **Updated** `archive/brain/BACKLOG.md` — TIN-8 marked done
+- **Updated** `archive/handoff/TASK.md` and `RESULT.md` — TIN-8 task and result documented
 
 ## Files Changed
-- `handoff/TASK.md` (updated for TIN-6)
-- `handoff/RESULT.md` (updated with completion summary)
-- `brain/BACKLOG.md` (TIN-6 added to Done)
+- `docs/SLACK_APP_SETUP.md` (new)
+- `README.md` (Setup Guides section)
+- `archive/brain/BACKLOG.md` (TIN-8 in Done)
+- `archive/handoff/TASK.md` (TIN-8 task brief)
+- `archive/handoff/RESULT.md` (this file)
 
 ## Notes / Deviations
-- No deviations. The test validates that Linear issues assigned to Cursor are received and can be acted upon.
-- The Linear → Cursor integration is working as expected.
+- No deviations. Checklist covers all acceptance criteria: installable bot, responds to mentions, posts only in threads.
