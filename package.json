@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "sync:open-tickets": "node scripts/sync-open-tickets.js",
     "dev": "next dev",
     "dev:webpack": "next dev --webpack",
     "build": "next build",
