@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
+import { verifySlackSignature } from "@/lib/signatures";
 import { createLinearIssue } from "@/lib/linear";
 import { parseTaskMessage, buildLinearDescription } from "@/lib/slack-task";
+import { getSlackSigningSecret } from "@/lib/config";
+import {
+  checkRateLimit,
+  DEFAULT_RATE_LIMIT,
+} from "@/lib/rate-limit";
 
-function verifySlackSignature(body: string, signature: string | null, secret: string): boolean {
-  if (!signature || !secret) return false;
-  const hmac = crypto.createHmac("sha256", secret);
-  hmac.update(body);
-  const expected = "v0=" + hmac.digest("hex");
-  const a = Buffer.from(signature, "utf8");
-  const b = Buffer.from(expected, "utf8");
-  return a.length === b.length && crypto.timingSafeEqual(a, b);
+function getRateLimitKey(request: NextRequest): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  const realIp = request.headers.get("x-real-ip");
+  return forwarded?.split(",")[0]?.trim() ?? realIp ?? "unknown";
 }
 
 async function postSlackMessage(
@@ -34,7 +35,19 @@ async function postSlackMessage(
 }
 
 export async function POST(request: NextRequest) {
-  const secret = process.env.SLACK_SIGNING_SECRET;
+  const key = getRateLimitKey(request);
+  const limit = checkRateLimit({
+    ...DEFAULT_RATE_LIMIT,
+    key: `slack:${key}`,
+  });
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { error: "Rate limit exceeded" },
+      { status: 429 }
+    );
+  }
+
+  const secret = getSlackSigningSecret();
   const linearApiKey = process.env.LINEAR_API_KEY;
   const linearTeamId = process.env.LINEAR_TEAM_ID;
   const linearCursorUserId = process.env.LINEAR_CURSOR_USER_ID;
