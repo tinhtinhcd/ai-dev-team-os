@@ -50,9 +50,6 @@ export default function BrainPage() {
       cancelled = true;
     };
   }, [selected]);
-    const id = setTimeout(() => void loadFile(selected), 0);
-    return () => clearTimeout(id);
-  }, [selected, loadFile]);
 
   const handleSave = async () => {
     setStatus("saving");
@@ -82,7 +79,6 @@ export default function BrainPage() {
         `Imported ${result.importedCount ?? 0} issues into BACKLOG.md`
       );
       setSelected("BACKLOG.md");
-      loadFile("BACKLOG.md");
       setTimeout(() => {
         setImportOpen(false);
         setImportStatus("idle");

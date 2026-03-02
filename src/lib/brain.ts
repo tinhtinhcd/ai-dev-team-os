@@ -2,12 +2,12 @@ import fs from "fs";
 import path from "path";
 
 const BRAIN_DIR = "brain";
-const BRAIN_FILES = ["PRODUCT.md", "BACKLOG.md", "DECISIONS.md", "STACK.md", "TEAMS.md"] as const;
 const BRAIN_FILES = [
   "PRODUCT.md",
   "BACKLOG.md",
   "DECISIONS.md",
   "STACK.md",
+  "TEAMS.md",
   "LINEAR_FAMILIARIZATION.md",
 ] as const;
 export type BrainFile = (typeof BRAIN_FILES)[number];
@@ -94,6 +94,8 @@ _List your teams and what they own._
 - **Invite link** — Share a unique link for self-service signup
 
 _Configure invites in your [settings](http://linear.app/settings/members)._
+`,
+
   "LINEAR_FAMILIARIZATION.md": `# Linear Platform Familiarization
 
 ## Overview
