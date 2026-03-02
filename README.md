@@ -86,6 +86,29 @@ The system will:
 4. Install the app to your workspace and copy the Bot Token
 5. Add env vars (see `.env.example`): `SLACK_SIGNING_SECRET`, `SLACK_BOT_TOKEN`, `LINEAR_API_KEY`, `LINEAR_TEAM_ID`, `LINEAR_CURSOR_USER_ID` (optional)
 
+### Slack Reporting (TIN-11)
+
+Agents report status changes to Slack via the gateway API. Format:
+
+```
+[ISSUE-ID] Status: <state>
+Owner: <assignee>
+Update: <1–2 lines>
+Next: <next step>
+```
+
+**Rules:** Same thread per issue, no duplicates, 3s debounce, no flooding.
+
+**API:**
+
+```bash
+curl -X POST http://localhost:3000/api/report \
+  -H "Content-Type: application/json" \
+  -d '{"issueId":"TIN-11","state":"In Progress","assignee":"Cursor","update":"Implemented format and anti-spam","next":"Test in Slack"}'
+```
+
+Set `SLACK_BOT_TOKEN` and `SLACK_CHANNEL` in `.env` (see `.env.example`).
+
 ## Tech Stack
 
 - **Next.js** 16 (App Router)
