@@ -42,6 +42,8 @@ yarn-error.log*
 
 # Linear thread mapping (contains channel/thread IDs)
 /data/linear-thread-map.json
+# Linear event log (runtime, for replay)
+/data/linear-events.json
 
 # Slack reporting state (runtime)
 .slack-threads.json

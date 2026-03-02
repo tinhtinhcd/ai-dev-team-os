@@ -63,3 +63,22 @@ export function getSlackDestination(identifier: string): {
   }
   return { channelId: "" };
 }
+
+/**
+ * Store or update the Slack thread mapping for a Linear issue.
+ * Used when creating Linear issues from Slack (Van Bot).
+ */
+export function setThreadForIssue(
+  identifier: string,
+  channelId: string,
+  threadTs: string
+): void {
+  const mapPath = getMapPath();
+  const dir = path.dirname(mapPath);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  const map = loadMap();
+  map[identifier] = { channelId, threadTs };
+  fs.writeFileSync(mapPath, JSON.stringify(map, null, 2), "utf-8");
+}
