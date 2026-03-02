@@ -116,6 +116,18 @@ Set `SLACK_BOT_TOKEN` and `SLACK_CHANNEL` in `.env` (see `.env.example`).
 - **Tailwind CSS** 4
 - **TypeScript** 5
 
+## Gateway Service (`/gateway`)
+
+Standalone event-driven gateway connecting Slack, Linear, and Cursor. See [gateway/README.md](gateway/README.md) for setup.
+
+- **Slack** — Receives mentions, creates Linear issues, posts updates to threads
+- **Linear** — Webhooks post issue updates back to the correct Slack thread
+- **SQLite** — Stores `linearIssueId ↔ slackChannelId ↔ slackThreadTs` mapping
+
+```bash
+cd gateway && npm install && npm run dev
+```
+
 ## Legacy Code
 
 Legacy modules (Brain Panel, Linear import, observability, handoff) were moved to `archive/` during TIN-12 cleanup. See [archive/ARCHIVE.md](archive/ARCHIVE.md) for details.

@@ -17,6 +17,11 @@
 /.next/
 /out/
 
+# gateway
+/gateway/node_modules
+/gateway/dist
+/gateway/*.db
+
 # production
 /build
 
@@ -33,6 +38,7 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 !.env.example
+!**/.env.example
 
 # Linear thread mapping (contains channel/thread IDs)
 /data/linear-thread-map.json
