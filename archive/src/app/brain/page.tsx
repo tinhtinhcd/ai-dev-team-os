@@ -79,8 +79,8 @@ export default function BrainPage() {
         `Imported ${result.importedCount ?? 0} issues into BACKLOG.md`
       );
       setSelected("BACKLOG.md");
-      const fresh = await loadBrainFile("BACKLOG.md");
-      setContent(fresh);
+      const data = await loadBrainFile("BACKLOG.md");
+      setContent(data);
       setTimeout(() => {
         setImportOpen(false);
         setImportStatus("idle");
