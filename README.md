@@ -1,34 +1,31 @@
 # AI Dev Team OS
 
-A local-first development workspace for managing product vision, backlog, architecture decisions, and tech stack in one place. No database, no auth, no cloud — everything lives in your repo.
+Event-driven AI development team: Linear manages tasks, Cursor executes code, Slack is the reporting hub. All agents report status changes to Slack via the gateway service.
 
-## Overview
+## MVP Goals
 
-- **Brain Panel** — View and edit project docs (PRODUCT.md, BACKLOG.md, DECISIONS.md, STACK.md, TEAMS.md) with a markdown editor and live preview
-- **Import from Linear** — Sync Linear issues into BACKLOG.md (To Do, In Progress, Done)
-- **Handoff workflow** — Task and result templates for PM → Engineer collaboration
-- **Local-first** — Uses Node `fs` for read/write; files live in `./brain/` and `./handoff/`
+- **Gateway** — Central event hub receiving updates from Linear, Cursor, and publishing to Slack
+- **Integrations** — Linear (webhooks), Slack (thread-per-issue), Cursor (task assignment)
+- **Storage** — Event persistence for audit and replay
+- **Event-driven** — No polling; webhooks and push-based updates only
 
-## Prerequisites
+## How to Run Locally
+
+### Prerequisites
 
 - **Node.js** 18.x or later
 - **npm** 9+
 
-## Quick Start
+### Quick Start
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and click **Open Brain Panel**, or go directly to [http://localhost:3000/brain](http://localhost:3000/brain).
+Open [http://localhost:3000](http://localhost:3000). The gateway health check is at [http://localhost:3000/api/gateway/health](http://localhost:3000/api/gateway/health).
 
-### Troubleshooting
-
-- **"Failed to fetch"** — Restart the dev server, or open `/brain` directly in the address bar.
-- **Page keeps loading** — Try `npm run dev:webpack` (Webpack instead of Turbopack), or open http://localhost:3000/brain directly.
-
-## Available Scripts
+### Available Scripts
 
 | Command | Description |
 |---------|-------------|
@@ -38,33 +35,31 @@ Open [http://localhost:3000](http://localhost:3000) and click **Open Brain Panel
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint |
 
-## Brain Panel (`/brain`)
+## Project Structure
 
-- **Left:** File list — PRODUCT.md, BACKLOG.md, DECISIONS.md, STACK.md, TEAMS.md
-- **Center:** Markdown editor
-- **Right:** Live markdown preview
+```
+├── gateway/           # Central event hub (health, routing)
+├── integrations/     # Adapters for Linear, Slack, Cursor
+│   ├── linear/
+│   ├── slack/
+│   └── cursor/
+├── storage/           # Event persistence
+├── archive/           # Legacy code (see archive/ARCHIVE.md)
+├── src/
+│   ├── app/           # Next.js App Router
+│   │   ├── api/       # API routes (gateway health, etc.)
+│   │   └── page.tsx   # Gateway landing
+│   └── lib/           # Shared utilities
+└── public/            # Static assets
+```
 
-### Brain Files
+## Operating Principles
 
-Docs live in `./brain/`:
-
-| File | Purpose |
-|------|---------|
-| `PRODUCT.md` | Vision, goals, success metrics |
-| `BACKLOG.md` | To do, in progress, done |
-| `DECISIONS.md` | Architecture decision records |
-| `STACK.md` | Tech stack inventory |
-| `TEAMS.md` | Team structure, roles, and member invites |
-
-If the `brain` folder or any file is missing, they are created automatically on first load with starter templates.
-
-### Import from Linear
-
-1. Open http://localhost:3000/brain
-2. Click **Import from Linear** in the header
-3. Enter your Linear API key (from [Linear Settings → API](https://linear.app/settings/api))
-4. Choose to replace or merge with existing backlog
-5. Click **Import** — issues sync into BACKLOG.md (To Do, In Progress, Done)
+1. **Linear** — Single source of truth for tasks and state
+2. **Cursor** — Main coding worker; assigned implementation issues
+3. **Slack** — Reporting interface for humans; one thread per Linear issue
+4. **Event-driven** — No polling loops; webhooks and push only
+5. **Structured reports** — All progress reports short and structured
 
 ### Slack → Linear (Van Bot)
 
@@ -91,41 +86,13 @@ The system will:
 4. Install the app to your workspace and copy the Bot Token
 5. Add env vars (see `.env.example`): `SLACK_SIGNING_SECRET`, `SLACK_BOT_TOKEN`, `LINEAR_API_KEY`, `LINEAR_TEAM_ID`, `LINEAR_CURSOR_USER_ID` (optional)
 
-### How to Test
-
-1. Run `npm run dev`
-2. Open http://localhost:3000/brain
-3. Select a file (e.g. PRODUCT.md)
-4. Edit the content in the center pane
-5. Click **Save** — status shows "Saving…" then "Saved"
-6. Verify on disk: `./brain/PRODUCT.md` (or the file you edited) reflects your changes
-
-## Handoff Workflow
-
-`./handoff/` contains task and result templates:
-
-- **TASK.md** — PM/Architect task brief
-- **RESULT.md** — Engineer result summary
-
-Workflow: PM writes TASK.md → Engineer implements → writes RESULT.md → commit.
-
 ## Tech Stack
 
 - **Next.js** 16 (App Router)
 - **React** 19
 - **Tailwind CSS** 4
-- **react-markdown** — Markdown rendering
-- **Node `fs`** — Local file read/write (no DB, no auth, no cloud)
+- **TypeScript** 5
 
-## Project Structure
+## Legacy Code
 
-```
-├── brain/           # Project docs (PRODUCT, BACKLOG, DECISIONS, STACK, TEAMS)
-├── handoff/         # Task and result templates
-├── src/
-│   ├── app/         # Next.js App Router pages
-│   │   ├── brain/   # Brain Panel page and actions
-│   │   └── ...
-│   └── lib/         # Utilities (brain.ts, observability)
-└── public/          # Static assets
-```
+Legacy modules (Brain Panel, Linear import, observability, handoff) were moved to `archive/` during TIN-12 cleanup. See [archive/ARCHIVE.md](archive/ARCHIVE.md) for details.

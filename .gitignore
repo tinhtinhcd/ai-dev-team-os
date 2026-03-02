@@ -34,6 +34,9 @@ yarn-error.log*
 .env*
 !.env.example
 
+# Linear thread mapping (contains channel/thread IDs)
+/data/linear-thread-map.json
+
 # vercel
 .vercel
 
