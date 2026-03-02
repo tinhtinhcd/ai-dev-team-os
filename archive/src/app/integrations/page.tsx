@@ -52,9 +52,9 @@ export default function IntegrationsPage() {
         </h2>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <IntegrationCard
-            title="Slack"
-            description="Create issues from Slack messages and sync threads"
-            href="https://linear.app/settings/integrations/slack"
+            title="Slack (Van Bot)"
+            description="Mention @Van Bot with task: &lt;title&gt; to create Linear issues, auto-assign to Cursor, and get confirmation in thread"
+            href="https://api.slack.com/apps"
           />
           <IntegrationCard
             title="GitHub / GitLab"

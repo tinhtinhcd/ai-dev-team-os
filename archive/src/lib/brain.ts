@@ -95,6 +95,7 @@ _List your teams and what they own._
 
 _Configure invites in your [settings](http://linear.app/settings/members)._
 `,
+
   "LINEAR_FAMILIARIZATION.md": `# Linear Platform Familiarization
 
 ## Overview

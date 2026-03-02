@@ -61,6 +61,31 @@ Open [http://localhost:3000](http://localhost:3000). The gateway health check is
 4. **Event-driven** — No polling loops; webhooks and push only
 5. **Structured reports** — All progress reports short and structured
 
+### Slack → Linear (Van Bot)
+
+Mention **@Van Bot** in Slack with:
+
+```
+task: <title>
+context: <optional>
+acceptance: <optional>
+```
+
+The system will:
+
+- Create a Linear issue
+- Link the Slack thread in the issue description
+- Assign to Cursor by default (if `LINEAR_CURSOR_USER_ID` is set)
+- Post confirmation in the Slack thread with the Linear link
+
+**Setup:**
+
+1. Create a Slack app at [api.slack.com/apps](https://api.slack.com/apps)
+2. Enable **Event Subscriptions** and set Request URL to `https://your-domain.com/api/slack/events`
+3. Subscribe to **app_mention** under Bot Events
+4. Install the app to your workspace and copy the Bot Token
+5. Add env vars (see `.env.example`): `SLACK_SIGNING_SECRET`, `SLACK_BOT_TOKEN`, `LINEAR_API_KEY`, `LINEAR_TEAM_ID`, `LINEAR_CURSOR_USER_ID` (optional)
+
 ## Tech Stack
 
 - **Next.js** 16 (App Router)
