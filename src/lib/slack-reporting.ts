@@ -1,17 +1,16 @@
 /**
- * Slack reporting for agent status updates (TIN-11).
+ * Slack reporting for agent status updates (TIN-11 / TIN-21).
  *
  * Format:
- * [ISSUE-ID] Status: <state>
- * Owner: <assignee>
- * Update: <1–2 lines>
- * Next: <next step>
+ * [ISSUE-ID] Status: <state> Owner: <assignee> Update: <1–2 lines> Next: <next step>
  *
  * Rules: same thread, no duplicates, 3s debounce, ignore bot self-events.
+ * Message template system and reporting state machine.
  */
 
 import fs from "fs";
 import path from "path";
+import { getThreadForIssue } from "@/lib/thread-map";
 
 export interface ReportPayload {
   issueId: string;
@@ -21,19 +20,45 @@ export interface ReportPayload {
   next: string;
 }
 
+/** Default template per TIN-21 spec. Placeholders: {{issueId}}, {{state}}, {{assignee}}, {{update}}, {{next}} */
+export const DEFAULT_REPORT_TEMPLATE =
+  "[{{issueId}}] Status: {{state}} Owner: {{assignee}} Update: {{update}} Next: {{next}}";
+
+/** Reporting state machine states. */
+export type ReportState =
+  | "idle"
+  | "pending"
+  | "sending"
+  | "sent"
+  | "duplicate"
+  | "error";
+
 /** Truncate update to 1–2 lines to prevent flooding. */
-function truncateUpdate(text: string, maxLines = 2): string {
+export function truncateUpdate(text: string, maxLines = 2): string {
   const lines = text.split("\n").filter((l) => l.trim());
   return lines.slice(0, maxLines).join("\n").trim() || "(no update)";
 }
 
-/** Format message per TIN-11 spec. */
-export function formatReportMessage(payload: ReportPayload): string {
+/** Render template with payload. */
+export function renderTemplate(
+  template: string,
+  payload: ReportPayload
+): string {
   const update = truncateUpdate(payload.update);
-  return `[${payload.issueId}] Status: ${payload.state}
-Owner: ${payload.assignee}
-Update: ${update}
-Next: ${payload.next}`;
+  return template
+    .replace(/\{\{issueId\}\}/g, payload.issueId)
+    .replace(/\{\{state\}\}/g, payload.state)
+    .replace(/\{\{assignee\}\}/g, payload.assignee)
+    .replace(/\{\{update\}\}/g, update)
+    .replace(/\{\{next\}\}/g, payload.next);
+}
+
+/** Format message per TIN-21 spec using default template. */
+export function formatReportMessage(
+  payload: ReportPayload,
+  template = DEFAULT_REPORT_TEMPLATE
+): string {
+  return renderTemplate(template, payload);
 }
 
 /** Create a content hash for duplicate detection. */
@@ -44,7 +69,7 @@ function contentHash(payload: ReportPayload): string {
 
 // --- Debouncer & anti-spam state ---
 
-const DEBOUNCE_MS = 3000;
+export const DEBOUNCE_MS = 3000;
 
 interface PendingReport {
   payload: ReportPayload;
@@ -53,6 +78,14 @@ interface PendingReport {
 
 const pendingByIssue = new Map<string, PendingReport>();
 const lastSentByIssue = new Map<string, string>();
+
+/** Reporting state machine: last state per issue. */
+const reportStateByIssue = new Map<string, ReportState>();
+
+/** Get current report state for an issue (for observability). */
+export function getReportState(issueId: string): ReportState {
+  return reportStateByIssue.get(issueId) ?? "idle";
+}
 
 /** Debounce: coalesce repeated updates for same issue within 3s. */
 function debounce(
@@ -64,6 +97,7 @@ function debounce(
 
   // Duplicate: same content as last sent → skip (no spam)
   if (lastSentByIssue.get(issueId) === hash) {
+    reportStateByIssue.set(issueId, "duplicate");
     return;
   }
 
@@ -72,12 +106,23 @@ function debounce(
     clearTimeout(existing.timer);
   }
 
+  reportStateByIssue.set(issueId, "pending");
+
   const timer = setTimeout(async () => {
     pendingByIssue.delete(issueId);
     // Re-check duplicate (another update may have been sent)
-    if (lastSentByIssue.get(issueId) === contentHash(payload)) return;
+    if (lastSentByIssue.get(issueId) === contentHash(payload)) {
+      reportStateByIssue.set(issueId, "duplicate");
+      return;
+    }
+    reportStateByIssue.set(issueId, "sending");
     lastSentByIssue.set(issueId, contentHash(payload));
-    await send(payload);
+    try {
+      await send(payload);
+      reportStateByIssue.set(issueId, "sent");
+    } catch {
+      reportStateByIssue.set(issueId, "error");
+    }
   }, DEBOUNCE_MS);
 
   pendingByIssue.set(issueId, { payload, timer });
@@ -89,8 +134,15 @@ interface LastSentEntry {
   at: number;
 }
 
+function getLastSentPath(): string {
+  return (
+    process.env.SLACK_LAST_SENT_PATH ??
+    path.join(process.cwd(), ".slack-last-sent.json")
+  );
+}
+
 function loadLastSent(): Record<string, LastSentEntry> {
-  const p = path.join(process.cwd(), ".slack-last-sent.json");
+  const p = getLastSentPath();
   try {
     const data = fs.readFileSync(p, "utf-8");
     return JSON.parse(data) as Record<string, LastSentEntry>;
@@ -100,7 +152,7 @@ function loadLastSent(): Record<string, LastSentEntry> {
 }
 
 function saveLastSent(map: Record<string, LastSentEntry>): void {
-  const p = path.join(process.cwd(), ".slack-last-sent.json");
+  const p = getLastSentPath();
   fs.writeFileSync(p, JSON.stringify(map, null, 2), "utf-8");
 }
 
@@ -125,11 +177,16 @@ export function markAsSent(issueId: string, payload: ReportPayload): void {
 
 // --- Thread mapping (issue → thread_ts) ---
 
-const THREAD_MAP_PATH = path.join(process.cwd(), ".slack-threads.json");
+function getThreadMapPath(): string {
+  return (
+    process.env.SLACK_THREADS_PATH ??
+    path.join(process.cwd(), ".slack-threads.json")
+  );
+}
 
 function loadThreadMap(): Record<string, string> {
   try {
-    const data = fs.readFileSync(THREAD_MAP_PATH, "utf-8");
+    const data = fs.readFileSync(getThreadMapPath(), "utf-8");
     return JSON.parse(data) as Record<string, string>;
   } catch {
     return {};
@@ -137,7 +194,7 @@ function loadThreadMap(): Record<string, string> {
 }
 
 function saveThreadMap(map: Record<string, string>): void {
-  fs.writeFileSync(THREAD_MAP_PATH, JSON.stringify(map, null, 2), "utf-8");
+  fs.writeFileSync(getThreadMapPath(), JSON.stringify(map, null, 2), "utf-8");
 }
 
 // --- Slack API ---
@@ -177,6 +234,7 @@ async function postToSlack(
 export interface SlackReportConfig {
   token: string;
   channel: string;
+  template?: string;
 }
 
 /**
@@ -187,25 +245,35 @@ export async function reportToSlack(
   payload: ReportPayload,
   config: SlackReportConfig
 ): Promise<{ success: boolean; error?: string }> {
-  const { token, channel } = config;
+  const { token, channel, template } = config;
   if (!token || !channel) {
     return { success: false, error: "Slack token and channel required" };
   }
 
-  const text = formatReportMessage(payload);
-  const threadMap = loadThreadMap();
-  const threadTs = threadMap[payload.issueId] ?? null;
+  reportStateByIssue.set(payload.issueId, "sending");
 
-  const result = await postToSlack(text, channel, threadTs, token);
+  const text = formatReportMessage(payload, template);
+
+  // Prefer thread-map (Linear-linked threads) when available; else use .slack-threads.json
+  const mappedThread = getThreadForIssue(payload.issueId);
+  const localThreadMap = loadThreadMap();
+  const channelToUse = mappedThread?.channelId ?? channel;
+  const threadTs =
+    mappedThread?.threadTs ?? localThreadMap[payload.issueId] ?? null;
+
+  const result = await postToSlack(text, channelToUse, threadTs, token);
 
   if (!result.ok) {
+    reportStateByIssue.set(payload.issueId, "error");
     return { success: false, error: result.error ?? "Slack API error" };
   }
 
-  // First message in thread: store ts for future replies
-  if (!threadTs && result.ts) {
-    threadMap[payload.issueId] = result.ts;
-    saveThreadMap(threadMap);
+  reportStateByIssue.set(payload.issueId, "sent");
+
+  // First message in thread: store ts for future replies (only when using default channel)
+  if (!threadTs && result.ts && !mappedThread) {
+    localThreadMap[payload.issueId] = result.ts;
+    saveThreadMap(localThreadMap);
   }
 
   return { success: true };
