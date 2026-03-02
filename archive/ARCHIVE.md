@@ -1,6 +1,6 @@
 # Archived Legacy Code
 
-This folder contains code moved during the TIN-12 cleanup to prepare for the new gateway + integrations + storage architecture.
+This folder contains code moved during the TIN-12 cleanup to prepare for the new gateway + integrations + storage architecture. For current open tickets, see [docs/OPEN_TICKETS.md](../docs/OPEN_TICKETS.md).
 
 ## What Was Archived (2025-02-28)
 

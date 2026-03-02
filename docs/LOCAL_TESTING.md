@@ -39,7 +39,7 @@ curl -s http://localhost:3000/api/gateway/health
 ```bash
 curl -X POST http://localhost:3000/api/report \
   -H "Content-Type: application/json" \
-  -d '{"issueId":"TIN-15","state":"In Progress","assignee":"Cursor","update":"Testing locally","next":"Verify"}'
+  -d '{"issueId":"TIN-30","state":"In Progress","assignee":"Cursor","update":"Testing locally","next":"Verify"}'
 ```
 
 **Expected (no Slack config):** `{"success":false,"error":"Slack not configured. Set SLACK_BOT_TOKEN and SLACK_CHANNEL."}`

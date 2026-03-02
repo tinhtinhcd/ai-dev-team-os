@@ -55,6 +55,7 @@ Create `data/linear-thread-map.json` (or set `LINEAR_THREAD_MAP_PATH`):
 
 - `channelId`: Slack channel ID
 - `threadTs`: Parent message timestamp (e.g. from Slack thread URL)
+- Keys are Linear issue identifiers (e.g. TIN-1, TIN-30). See [docs/OPEN_TICKETS.md](../../docs/OPEN_TICKETS.md) for current issues.
 
 ### 4. Slack App
 
