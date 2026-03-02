@@ -1,26 +1,26 @@
 # Task Brief
 
 **Author:** PM/Architect  
-**Created:** 2025-02-28  
+**Created:** 2025-03-02  
 **Status:** Done
 
 ## Summary
-Create a test task and assign it to Cursor.
+Create Slack app setup checklist (TIN-8).
 
 ## Context
-TIN-6 is a test task to verify the Linear → Cursor integration. The goal is to confirm that a task can be created in Linear, assigned to Cursor, and that Cursor receives and can act on it.
+TIN-8 defines the Slack app configuration needed for the AI Dev Team OS. The bot must be installable, respond to mentions, and post only in threads. Target channel for MVP: #team-leo.
 
 ## Requirements
-- Create a test task in Linear
-- Assign the task to Cursor
-- Verify Cursor receives and processes the assignment
+- Required scopes: chat:write, app_mentions:read, channels:read
+- Event subscription: app_mention
+- Bot must reply only in thread
+- Provide setup steps
 
 ## Acceptance Criteria
-- [x] Test task created in Linear (TIN-6)
-- [x] Task assigned to Cursor
-- [x] Cursor received and processed the assignment
-- [x] Handoff workflow documented (TASK.md, RESULT.md)
-- [x] BACKLOG updated to reflect completion
+- [x] Slack bot can be installed
+- [x] Can respond to mention
+- [x] Posts into thread only
+- [x] Setup checklist documented (docs/SLACK_APP_SETUP.md)
 
 ## Notes / Constraints
-- Meta-task: validates the Linear → Cursor workflow end-to-end.
+- Checklist must cover all scopes, events, and thread-only reply behavior.

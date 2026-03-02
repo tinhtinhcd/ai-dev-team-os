@@ -9,6 +9,11 @@ Event-driven AI development team: Linear manages tasks, Cursor executes code, Sl
 - **Storage** — Event persistence for audit and replay
 - **Event-driven** — No polling; webhooks and push-based updates only
 
+## Setup Guides
+
+- [Slack App Setup](docs/SLACK_APP_SETUP.md) — Scopes, events, thread-only replies, target channel `#team-leo`
+- [Linear Webhook Setup](integrations/linear/WEBHOOK_SETUP.md) — Webhook config and thread mapping
+
 ## How to Run Locally
 
 ### Prerequisites
