@@ -11,6 +11,7 @@ Event-driven AI development team: Linear manages tasks, Cursor executes code, Sl
 
 ## Setup Guides
 
+- [Phase 1 MVP Task Breakdown](docs/PHASE1_MVP_LINEAR_TASK_BREAKDOWN.md) — Linear task breakdown (TIN-17), execution order, @Leo review
 - [Slack App Setup](docs/SLACK_APP_SETUP.md) — Scopes, events, thread-only replies, target channel `#team-leo`
 - [Linear Webhook Setup](integrations/linear/WEBHOOK_SETUP.md) — Webhook config and thread mapping
 - [Open Tickets](docs/OPEN_TICKETS.md) — Current backlog from Linear (sync with `npm run sync:open-tickets`)
