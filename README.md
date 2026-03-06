@@ -41,6 +41,7 @@ Open [http://localhost:3000](http://localhost:3000). The gateway health check is
 | `npm run build` | Build for production |
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint |
+| `npm test` | Run unit tests (Vitest) |
 | `npm run sync:open-tickets` | Sync open tickets from Linear to docs/OPEN_TICKETS.md |
 | `npm run process:open-task` | Process .md files in open-task/ → create Linear issues (local test) |
 
