@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "sync:open-tickets": "node scripts/sync-open-tickets.js",
+    "assign:open-issues-to-codex": "node scripts/assign-open-issues-to-codex.js",
     "process:open-task": "node scripts/process-open-task.js",
     "dev": "next dev",
     "dev:webpack": "next dev --webpack",

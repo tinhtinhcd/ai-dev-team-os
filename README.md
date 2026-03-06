@@ -14,6 +14,7 @@ Event-driven AI development team: Linear manages tasks, Cursor executes code, Sl
 - [Slack App Setup](docs/SLACK_APP_SETUP.md) — Scopes, events, thread-only replies, target channel `#team-leo`
 - [Linear Webhook Setup](integrations/linear/WEBHOOK_SETUP.md) — Webhook config and thread mapping
 - [Open Tickets](docs/OPEN_TICKETS.md) — Current backlog from Linear (sync with `npm run sync:open-tickets`)
+- [Open Issues Task Breakdown](docs/OPEN_ISSUES_TASK_BREAKDOWN.md) — Task breakdowns for open issues, assigned to Codex
 - [Open Task → Linear](docs/OPEN_TASK_AUTOMATION.md) — Automation: thêm file .md vào `open-task/` → tạo issue Linear
 
 ## How to Run Locally
@@ -42,6 +43,7 @@ Open [http://localhost:3000](http://localhost:3000). The gateway health check is
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint |
 | `npm run sync:open-tickets` | Sync open tickets from Linear to docs/OPEN_TICKETS.md |
+| `npm run assign:open-issues-to-codex` | Assign all open issues to Codex (requires LINEAR_CODEX_USER_ID) |
 | `npm run process:open-task` | Process .md files in open-task/ → create Linear issues (local test) |
 
 ## Project Structure
