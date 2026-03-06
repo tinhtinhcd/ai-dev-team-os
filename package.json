@@ -9,7 +9,10 @@
     "dev:webpack": "next dev --webpack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "bash tests/run.sh",
+    "setup": "bash scripts/setup-local.sh",
+    "smoke": "bash scripts/smoke-test.sh"
   },
   "dependencies": {
     "@slack/web-api": "^7.14.1",

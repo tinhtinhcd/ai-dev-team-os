@@ -16,7 +16,7 @@ Event-driven AI development team: Linear manages tasks, Cursor executes code, Sl
 - [Open Tickets](docs/OPEN_TICKETS.md) — Current backlog from Linear (sync with `npm run sync:open-tickets`)
 - [Open Task → Linear](docs/OPEN_TASK_AUTOMATION.md) — Automation: thêm file .md vào `open-task/` → tạo issue Linear
 
-## How to Run Locally
+## Local Development
 
 ### Prerequisites
 
@@ -30,7 +30,67 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The gateway health check is at [http://localhost:3000/api/gateway/health](http://localhost:3000/api/gateway/health). See [Local Testing Guide](docs/LOCAL_TESTING.md) for verification steps.
+Open [http://localhost:3000](http://localhost:3000). The gateway health check is at [http://localhost:3000/api/gateway/health](http://localhost:3000/api/gateway/health).
+
+### One-Command Setup (Fresh Clone)
+
+From a fresh clone, run the setup script to initialize `.env`, install dependencies, and build:
+
+```bash
+npm run setup
+# or: bash scripts/setup-local.sh
+```
+
+Then start the dev server:
+
+```bash
+npm run dev
+```
+
+### Manual Setup
+
+1. Copy `.env.example` to `.env` (optional; app runs without env vars; add Slack/Linear keys when needed)
+2. `npm install` and `cd gateway && npm install`
+3. `npm run build` and `cd gateway && npm run build`
+4. `npm run dev`
+
+### Docker
+
+Build and run the app in a container:
+
+```bash
+docker compose --profile full up -d
+```
+
+Or build the image only:
+
+```bash
+docker build -t ai-dev-team-os .
+docker run -p 3000:3000 ai-dev-team-os
+```
+
+### Dev Containers (VS Code)
+
+Open the repo in VS Code and use **Dev Containers** (Remote - Containers extension). The devcontainer will:
+
+- Use Node.js 22
+- Run `scripts/setup-local.sh` on first create
+- Forward port 3000 for the Next.js app
+
+### CI Pipeline
+
+The [`.github/workflows/ci.yml`](.github/workflows/ci.yml) pipeline runs on push/PR to `master` or `main`:
+
+1. Install dependencies (root + gateway)
+2. Lint (root + gateway)
+3. Run test suite (`tests/run.sh`)
+4. Build (root + gateway)
+
+### Validation
+
+- **Smoke test:** `npm run smoke` — runs build + lint for root and gateway
+- **Full tests:** `npm run test` — runs the automated test suite
+- **Verification:** See [Local Testing Guide](docs/LOCAL_TESTING.md) for API checks
 
 ### Available Scripts
 
@@ -41,6 +101,9 @@ Open [http://localhost:3000](http://localhost:3000). The gateway health check is
 | `npm run build` | Build for production |
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint |
+| `npm run test` | Run full test suite |
+| `npm run setup` | One-command local setup |
+| `npm run smoke` | Smoke test (build + lint) |
 | `npm run sync:open-tickets` | Sync open tickets from Linear to docs/OPEN_TICKETS.md |
 | `npm run process:open-task` | Process .md files in open-task/ → create Linear issues (local test) |
 

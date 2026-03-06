@@ -13,6 +13,8 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     "archive/**",
+    // Gateway has its own lint
+    "gateway/**",
   ]),
 ]);
 
