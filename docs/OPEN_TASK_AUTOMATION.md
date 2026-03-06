@@ -35,6 +35,10 @@ Automation tạo issue Linear khi có file `.md` mới trong `open-task/`.
 ### Chạy local (test)
 
 ```bash
+# Dry-run: kiểm tra parse logic, không gọi API, không di chuyển file
+npm run test:open-task
+
+# Chạy thật (cần credentials)
 LINEAR_API_KEY=lin_api_xxx LINEAR_TEAM_ID=xxx npm run process:open-task
 ```
 

@@ -5,6 +5,7 @@
   "scripts": {
     "sync:open-tickets": "node scripts/sync-open-tickets.js",
     "process:open-task": "node scripts/process-open-task.js",
+    "test:open-task": "node scripts/process-open-task.js --dry-run",
     "dev": "next dev",
     "dev:webpack": "next dev --webpack",
     "build": "next build",
