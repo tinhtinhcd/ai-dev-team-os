@@ -53,7 +53,12 @@ Open [http://localhost:3000](http://localhost:3000). The gateway health check is
 │   ├── slack/
 │   └── cursor/
 ├── storage/           # Event persistence
+├── scripts/           # Sync and automation scripts
+├── data/              # Local data and mappings
+├── open-task/         # .md files → Linear issues (GitHub Action)
 ├── archive/           # Legacy code (see archive/ARCHIVE.md)
+├── .github/           # GitHub Actions (open-task automation)
+├── docs/              # Setup guides and documentation
 ├── src/
 │   ├── app/           # Next.js App Router
 │   │   ├── api/       # API routes (gateway health, etc.)
