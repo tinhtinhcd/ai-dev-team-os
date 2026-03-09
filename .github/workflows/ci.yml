@@ -1,0 +1,40 @@
+# CI: install, lint, tests, build on push/PR
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install gateway dependencies
+        run: cd gateway && npm ci && cd ..
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Lint gateway
+        run: cd gateway && npm run lint && cd ..
+
+      - name: Run tests
+        run: bash tests/run.sh
+
+      - name: Build
+        run: npm run build
+
+      - name: Build gateway
+        run: cd gateway && npm run build && cd ..

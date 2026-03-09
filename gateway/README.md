@@ -50,6 +50,16 @@ npm run dev
 1. **Slack mention** → Gateway receives event (signature verified by Bolt) → creates Linear issue → stores `linearIssueId ↔ slackChannelId ↔ slackThreadTs` → replies in thread.
 2. **Linear webhook** → Gateway receives webhook (signature verified) → looks up mapping → posts update to the correct Slack thread.
 
+## Chapters (TIN-37)
+
+Concurrency-safe chapter numbering per series. The `chapters` table has `UNIQUE(series_id, number)` and `createChapter(seriesId, title?)` retries on conflict to avoid duplicate numbers under concurrent requests.
+
+```ts
+import { createChapter } from "./src/db.js";
+const ch = createChapter("series-123", "Chapter Title");
+// ch.number is the next available number for that series
+```
+
 ## Acceptance Criteria
 
 - [x] Can receive Slack mention

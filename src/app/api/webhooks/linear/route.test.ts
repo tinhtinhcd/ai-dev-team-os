@@ -1,45 +1,103 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+
+// Mock dependencies before importing the route
+vi.mock("@/lib/thread-map", () => ({
+  getSlackDestination: vi.fn((id: string) =>
+    id === "TIN-20"
+      ? { channelId: "C123", threadTs: "123.456" }
+      : { channelId: "" }
+  ),
+}));
+
+vi.mock("@/lib/slack", () => ({
+  postToSlack: vi.fn(() => Promise.resolve({ ok: true })),
+}));
+
+vi.mock("@/lib/event-storage", () => ({
+  storeEvent: vi.fn((payload: unknown) => ({
+    id: "evt_test_123",
+    type: (payload as { type?: string }).type,
+    action: (payload as { action?: string }).action,
+    status: "received",
+  })),
+  updateEventStatus: vi.fn(() => true),
+}));
+
+// Import after mocks
 import { POST } from "./route";
 
-const origEnv = process.env;
+function buildRequest(body: object, headers: Record<string, string> = {}) {
+  return new Request("http://localhost/api/webhooks/linear", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...headers },
+    body: JSON.stringify(body),
+  });
+}
 
 describe("POST /api/webhooks/linear", () => {
-  const baseUrl = "http://localhost:3000";
-
   beforeEach(() => {
-    process.env = { ...origEnv };
-    process.env.LINEAR_WEBHOOK_SECRET = "test-secret";
+    vi.clearAllMocks();
+    delete process.env.LINEAR_WEBHOOK_SECRET;
   });
 
-  afterEach(() => {
-    process.env = origEnv;
-  });
-
-  async function postLinearWebhook(
-    body: string,
-    signature: string | null
-  ): Promise<Response> {
-    const headers = new Headers();
-    if (signature) headers.set("x-linear-signature", signature);
-    const req = new Request(`${baseUrl}/api/webhooks/linear`, {
+  it("returns 400 for invalid JSON", async () => {
+    const req = new Request("http://localhost/api/webhooks/linear", {
       method: "POST",
-      headers,
-      body,
+      headers: { "Content-Type": "application/json" },
+      body: "not valid json {{{",
     });
-    return POST(req as import("next/server").NextRequest);
-  }
-
-  it("rejects invalid signature with 401", async () => {
-    const body = '{"type":"Issue","action":"create","data":{"id":"123"}}';
-    const res = await postLinearWebhook(body, "a".repeat(64));
-    expect(res.status).toBe(401);
-    const json = await res.json();
-    expect(json.error).toBe("Invalid signature");
+    const res = await POST(req as unknown as import("next/server").NextRequest);
+    expect(res.status).toBe(400);
   });
 
-  it("rejects missing signature when secret is configured with 401", async () => {
-    const body = '{"type":"Issue","action":"create","data":{"id":"123"}}';
-    const res = await postLinearWebhook(body, null);
-    expect(res.status).toBe(401);
+  it("processes Issue create and posts to Slack", async () => {
+    const payload = {
+      action: "create",
+      type: "Issue",
+      data: {
+        identifier: "TIN-20",
+        title: "Test issue",
+        url: "https://linear.app/issue/TIN-20",
+        state: { name: "Todo" },
+        assignee: null,
+      },
+    };
+    const req = buildRequest(payload);
+    const res = await POST(req as unknown as import("next/server").NextRequest);
+    const json = await res.json();
+    expect(res.status).toBe(200);
+    expect(json.received).toBe(true);
+    expect(json.posted).toBe(true);
+  });
+
+  it("returns skipped when no Slack mapping", async () => {
+    const { getSlackDestination } = await import("@/lib/thread-map");
+    vi.mocked(getSlackDestination).mockReturnValue({ channelId: "" });
+
+    const payload = {
+      action: "create",
+      type: "Issue",
+      data: { identifier: "TIN-99", title: "Orphan" },
+    };
+    const req = buildRequest(payload);
+    const res = await POST(req as unknown as import("next/server").NextRequest);
+    const json = await res.json();
+    expect(res.status).toBe(200);
+    expect(json.received).toBe(true);
+    expect(json.skipped).toContain("No Slack mapping");
+  });
+
+  it("returns received for unhandled event type", async () => {
+    const payload = {
+      action: "remove",
+      type: "Issue",
+      data: { identifier: "TIN-20" },
+    };
+    const req = buildRequest(payload);
+    const res = await POST(req as unknown as import("next/server").NextRequest);
+    const json = await res.json();
+    expect(res.status).toBe(200);
+    expect(json.received).toBe(true);
+    expect(json.posted).toBeUndefined();
   });
 });

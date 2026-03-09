@@ -16,8 +16,10 @@ import {
   checkRateLimit,
   DEFAULT_RATE_LIMIT,
 } from "@/lib/rate-limit";
+import { storeEvent, updateEventStatus } from "@/lib/event-storage";
 
-const SIGNATURE_HEADER = "x-linear-signature";
+// Linear sends signature in "linear-signature" header (per @linear/sdk)
+const SIGNATURE_HEADERS = ["linear-signature", "x-linear-signature", "X-Linear-Signature"] as const;
 
 function getRateLimitKey(request: NextRequest): string {
   const forwarded = request.headers.get("x-forwarded-for");
@@ -40,7 +42,8 @@ export async function POST(request: NextRequest) {
 
   const secret = getLinearWebhookSecret();
   const rawBody = await request.text();
-  const signature = request.headers.get(SIGNATURE_HEADER) ?? request.headers.get("X-Linear-Signature");
+  const signature =
+    SIGNATURE_HEADERS.map((h) => request.headers.get(h)).find(Boolean) ?? null;
 
   if (isLinearWebhookVerificationRequired() && !secret) {
     return NextResponse.json(
@@ -59,8 +62,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
+  // Persistent event logging
+  const stored = storeEvent(payload as Record<string, unknown>, "received");
+
   const formatted = formatLinearEventForSlack(payload);
   if (!formatted) {
+    updateEventStatus(stored.id, "skipped");
     return NextResponse.json({ received: true });
   }
 
@@ -68,6 +75,7 @@ export async function POST(request: NextRequest) {
   const dest = issueIdentifier ? getSlackDestination(issueIdentifier) : null;
 
   if (!dest || !dest.channelId) {
+    updateEventStatus(stored.id, "skipped", "No Slack mapping for issue");
     return NextResponse.json({
       received: true,
       skipped: "No Slack mapping for issue",
@@ -81,11 +89,13 @@ export async function POST(request: NextRequest) {
   });
 
   if (!result.ok) {
+    updateEventStatus(stored.id, "failed", result.error);
     return NextResponse.json(
       { received: true, error: result.error },
       { status: 500 }
     );
   }
 
+  updateEventStatus(stored.id, "processed");
   return NextResponse.json({ received: true, posted: true });
 }

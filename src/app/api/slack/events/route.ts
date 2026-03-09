@@ -7,6 +7,8 @@ import {
   checkRateLimit,
   DEFAULT_RATE_LIMIT,
 } from "@/lib/rate-limit";
+import { setThreadForIssue } from "@/lib/thread-map";
+import { isBotSelfEvent } from "@/lib/slack-reporting";
 
 function getRateLimitKey(request: NextRequest): string {
   const forwarded = request.headers.get("x-forwarded-for");
@@ -65,7 +67,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
-  const payload = JSON.parse(rawBody) as {
+  let payload: {
     type?: string;
     challenge?: string;
     event?: {
@@ -74,8 +76,15 @@ export async function POST(request: NextRequest) {
       channel?: string;
       ts?: string;
       thread_ts?: string;
+      user?: string;
+      bot_id?: string;
     };
   };
+  try {
+    payload = JSON.parse(rawBody) as typeof payload;
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
 
   if (payload.type === "url_verification") {
     return NextResponse.json({ challenge: payload.challenge });
@@ -86,6 +95,16 @@ export async function POST(request: NextRequest) {
   }
 
   const event = payload.event;
+
+  if (event.bot_id) {
+    return NextResponse.json({ ok: true });
+  }
+  // Ignore bot self-events to prevent loops
+  const botUserId = process.env.SLACK_BOT_USER_ID;
+  if (botUserId && isBotSelfEvent(botUserId, event.user)) {
+    return NextResponse.json({ ok: true });
+  }
+
   const text = event.text ?? "";
   const channel = event.channel ?? "";
   const threadTs = event.thread_ts ?? event.ts ?? "";
@@ -148,6 +167,11 @@ export async function POST(request: NextRequest) {
 
   if (slackBotToken && channel && threadTs) {
     await postSlackMessage(channel, threadTs, confirmMsg, slackBotToken);
+  }
+
+  // Persist Linear–Slack thread mapping for webhook delivery
+  if (result.identifier && channel && threadTs) {
+    setThreadForIssue(result.identifier, channel, threadTs);
   }
 
   return NextResponse.json({ ok: true });
