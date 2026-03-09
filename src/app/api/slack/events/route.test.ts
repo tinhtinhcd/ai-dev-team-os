@@ -1,3 +1,6 @@
+/**
+ * Tests for Slack events API route - includes bot self-event handling (TIN-21).
+ */
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import crypto from "crypto";
 import { POST } from "./route";
@@ -116,6 +119,27 @@ describe("POST /api/slack/events", () => {
         channel: "C123",
         ts: "1234567890.123456",
         bot_id: "B123",
+      },
+    };
+    const req = createRequest(payload, SECRET);
+    const res = await POST(req as import("next/server").NextRequest);
+    const json = await res.json();
+    expect(res.status).toBe(200);
+    expect(json).toEqual({ ok: true });
+    expect(mockCreateLinearIssue).not.toHaveBeenCalled();
+    expect(mockFetch).not.toHaveBeenCalled();
+  });
+
+  it("ignores app_mention from bot self (SLACK_BOT_USER_ID)", async () => {
+    process.env.SLACK_BOT_USER_ID = "U0BOT123";
+    const payload = {
+      type: "event_callback",
+      event: {
+        type: "app_mention",
+        user: "U0BOT123",
+        text: "<@U0BOT123> task: something",
+        channel: "C123",
+        ts: "123.456",
       },
     };
     const req = createRequest(payload, SECRET);

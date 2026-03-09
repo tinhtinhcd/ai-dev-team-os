@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { createLinearIssue } from "@/lib/linear";
 import { parseTaskMessage, buildLinearDescription } from "@/lib/slack-task";
+import { isBotSelfEvent } from "@/lib/slack-reporting";
 
 function verifySlackSignature(body: string, signature: string | null, secret: string): boolean {
   if (!signature || !secret) return false;
@@ -61,6 +62,7 @@ export async function POST(request: NextRequest) {
       channel?: string;
       ts?: string;
       thread_ts?: string;
+      user?: string;
       bot_id?: string;
     };
   };
@@ -79,7 +81,13 @@ export async function POST(request: NextRequest) {
   }
 
   const event = payload.event;
+
   if (event.bot_id) {
+    return NextResponse.json({ ok: true });
+  }
+  // Ignore bot self-events to prevent loops
+  const botUserId = process.env.SLACK_BOT_USER_ID;
+  if (botUserId && isBotSelfEvent(botUserId, event.user)) {
     return NextResponse.json({ ok: true });
   }
 
