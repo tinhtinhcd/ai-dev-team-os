@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "sync:open-tickets": "node scripts/sync-open-tickets.js",
+    "assign:open-issues-to-codex": "node scripts/assign-open-issues-to-codex.js",
     "process:open-task": "node scripts/process-open-task.js",
     "test:open-task": "node scripts/process-open-task.js --dry-run",
     "dev": "next dev",
@@ -14,6 +15,7 @@
   },
   "dependencies": {
     "@slack/web-api": "^7.14.1",
+    "zod": "^3.25.0",
     "@tailwindcss/typography": "^0.5.19",
     "next": "16.1.6",
     "react": "19.2.3",

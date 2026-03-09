@@ -13,6 +13,17 @@ db.exec(`
   );
 
   CREATE INDEX IF NOT EXISTS idx_slack_channel_thread ON issue_mappings(slack_channel_id, slack_thread_ts);
+
+  CREATE TABLE IF NOT EXISTS chapters (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    series_id TEXT NOT NULL,
+    number INTEGER NOT NULL,
+    title TEXT,
+    created_at TEXT DEFAULT (datetime('now')),
+    UNIQUE(series_id, number)
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_chapters_series ON chapters(series_id);
 `);
 
 export interface IssueMapping {
@@ -54,4 +65,50 @@ export function getMappingBySlack(
     )
     .get(slackChannelId, slackThreadTs) as IssueMapping | undefined;
   return row ?? null;
+}
+
+// --- Chapters (concurrency-safe per series, TIN-37) ---
+
+export interface Chapter {
+  id: number;
+  seriesId: string;
+  number: number;
+  title: string | null;
+  createdAt: string;
+}
+
+const MAX_RETRIES = 5;
+
+/**
+ * Creates a chapter with the next available number for the series.
+ * Uses UNIQUE(series_id, number) + retry on conflict to avoid duplicates under concurrent requests.
+ */
+export function createChapter(
+  seriesId: string,
+  title?: string | null
+): Chapter {
+  for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+    try {
+      db.prepare(`
+        INSERT INTO chapters (series_id, number, title)
+        SELECT ?, COALESCE(MAX(number), 0) + 1, ?
+        FROM chapters WHERE series_id = ?
+      `).run(seriesId, title ?? null, seriesId);
+
+      const row = db
+        .prepare(
+          `SELECT id, series_id as seriesId, number, title, created_at as createdAt
+           FROM chapters WHERE series_id = ? ORDER BY number DESC LIMIT 1`
+        )
+        .get(seriesId) as Chapter;
+      return row;
+    } catch (err) {
+      const sqliteErr = err as { code?: string };
+      if (sqliteErr?.code === "SQLITE_CONSTRAINT_UNIQUE" && attempt < MAX_RETRIES - 1) {
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw new Error("createChapter: max retries exceeded");
 }

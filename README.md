@@ -11,9 +11,11 @@ Event-driven AI development team: Linear manages tasks, Cursor executes code, Sl
 
 ## Setup Guides
 
+- [Phase 1 MVP Task Breakdown](docs/PHASE1_MVP_LINEAR_TASK_BREAKDOWN.md) — Linear task breakdown (TIN-17), execution order, @Leo review
 - [Slack App Setup](docs/SLACK_APP_SETUP.md) — Scopes, events, thread-only replies, target channel `#team-leo`
 - [Linear Webhook Setup](integrations/linear/WEBHOOK_SETUP.md) — Webhook config and thread mapping
 - [Open Tickets](docs/OPEN_TICKETS.md) — Current backlog from Linear (sync with `npm run sync:open-tickets`)
+- [Open Issues Task Breakdown](docs/OPEN_ISSUES_TASK_BREAKDOWN.md) — Task breakdowns for open issues, assigned to Codex
 - [Open Task → Linear](docs/OPEN_TASK_AUTOMATION.md) — Automation: thêm file .md vào `open-task/` → tạo issue Linear
 
 ## How to Run Locally
@@ -26,11 +28,20 @@ Event-driven AI development team: Linear manages tasks, Cursor executes code, Sl
 ### Quick Start
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The gateway health check is at [http://localhost:3000/api/gateway/health](http://localhost:3000/api/gateway/health). See [Local Testing Guide](docs/LOCAL_TESTING.md) for verification steps.
+Use `npm ci` for reproducible installs (requires `package-lock.json`). Open [http://localhost:3000](http://localhost:3000). The gateway health check is at [http://localhost:3000/api/gateway/health](http://localhost:3000/api/gateway/health). See [Local Testing Guide](docs/LOCAL_TESTING.md) for verification steps.
+
+### Development Validation Checklist
+
+Before merging local setup changes, verify:
+
+- [ ] **Clean install** — `npm ci` completes without errors
+- [ ] **Lint & build** — `npm run lint` and `npm run build` pass
+- [ ] **Smoke test** — Dev server starts, health check responds
+- [ ] **Docs updated** — README and setup guides reflect any changes
 
 ### Available Scripts
 
@@ -43,6 +54,7 @@ Open [http://localhost:3000](http://localhost:3000). The gateway health check is
 | `npm run lint` | Run ESLint |
 | `npm run sync:open-tickets` | Sync open tickets from Linear to docs/OPEN_TICKETS.md |
 | `npm run test:open-task` | Dry-run: validate open-task parsing (no API, no file moves) |
+| `npm run assign:open-issues-to-codex` | Assign all open issues to Codex (requires LINEAR_CODEX_USER_ID) |
 | `npm run process:open-task` | Process .md files in open-task/ → create Linear issues (local) |
 
 ## Project Structure
@@ -54,7 +66,12 @@ Open [http://localhost:3000](http://localhost:3000). The gateway health check is
 │   ├── slack/
 │   └── cursor/
 ├── storage/           # Event persistence
+├── scripts/           # Sync and automation scripts
+├── data/              # Local data and mappings
+├── open-task/         # .md files → Linear issues (GitHub Action)
 ├── archive/           # Legacy code (see archive/ARCHIVE.md)
+├── .github/           # GitHub Actions (open-task automation)
+├── docs/              # Setup guides and documentation
 ├── src/
 │   ├── app/           # Next.js App Router
 │   │   ├── api/       # API routes (gateway health, etc.)
