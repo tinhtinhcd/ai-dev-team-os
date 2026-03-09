@@ -100,6 +100,12 @@ LINEAR_TEAM_ID=...
 LINEAR_CURSOR_USER_ID=...  # Optional: default assignee
 ```
 
+For agent status reporting (TIN-11, `/api/report`):
+
+```bash
+SLACK_CHANNEL=...  # Channel ID for reports (e.g. C0ABQLYUE0K or #team-leo)
+```
+
 ---
 
 ## Verification

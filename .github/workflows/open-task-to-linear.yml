@@ -1,0 +1,58 @@
+# Automation: Tạo issue Linear khi có file .md mới trong open-task/
+# Trigger: push vào open-task/**/*.md
+# Hành động: parse .md → tạo issue Linear → di chuyển file sang open-task-processed/
+name: Open Task → Linear
+
+on:
+  push:
+    paths:
+      - "open-task/**/*.md"
+    branches:
+      - master
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Validate open-task script (dry-run)
+        run: node scripts/process-open-task.js --dry-run
+
+  process:
+    runs-on: ubuntu-latest
+    needs: validate
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Process open-task .md files
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          LINEAR_TEAM_ID: ${{ secrets.LINEAR_TEAM_ID }}
+        run: node scripts/process-open-task.js
+
+      - name: Commit and push processed files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A open-task/ open-task-processed/
+          if git diff --staged --quiet; then
+            echo "No changes to commit (no files were processed)"
+          else
+            git diff --staged --stat
+            git commit -m "chore(open-task): move processed .md to open-task-processed/"
+            git push
+          fi

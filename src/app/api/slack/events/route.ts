@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
-  const payload = JSON.parse(rawBody) as {
+  let payload: {
     type?: string;
     challenge?: string;
     event?: {
@@ -66,6 +66,11 @@ export async function POST(request: NextRequest) {
       bot_id?: string;
     };
   };
+  try {
+    payload = JSON.parse(rawBody) as typeof payload;
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
 
   if (payload.type === "url_verification") {
     return NextResponse.json({ challenge: payload.challenge });
@@ -77,11 +82,15 @@ export async function POST(request: NextRequest) {
 
   const event = payload.event;
 
+  if (event.bot_id) {
+    return NextResponse.json({ ok: true });
+  }
   // Ignore bot self-events to prevent loops
   const botUserId = process.env.SLACK_BOT_USER_ID;
   if (botUserId && isBotSelfEvent(botUserId, event.user)) {
     return NextResponse.json({ ok: true });
   }
+
   const text = event.text ?? "";
   const channel = event.channel ?? "";
   const threadTs = event.thread_ts ?? event.ts ?? "";
