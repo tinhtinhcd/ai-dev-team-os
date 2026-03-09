@@ -7,7 +7,8 @@ import {
 import { getSlackDestination } from "@/lib/thread-map";
 import { postToSlack } from "@/lib/slack";
 
-const SIGNATURE_HEADER = "x-linear-signature";
+// Linear sends signature in "linear-signature" header (per @linear/sdk)
+const SIGNATURE_HEADERS = ["linear-signature", "x-linear-signature", "X-Linear-Signature"] as const;
 
 function verifySignature(rawBody: string, signature: string | null, secret: string): boolean {
   if (!secret || !signature) {
@@ -29,7 +30,8 @@ function verifySignature(rawBody: string, signature: string | null, secret: stri
 export async function POST(request: NextRequest) {
   const secret = process.env.LINEAR_WEBHOOK_SECRET;
   const rawBody = await request.text();
-  const signature = request.headers.get(SIGNATURE_HEADER) ?? request.headers.get("X-Linear-Signature");
+  const signature =
+    SIGNATURE_HEADERS.map((h) => request.headers.get(h)).find(Boolean) ?? null;
 
   if (secret && !verifySignature(rawBody, signature, secret)) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
