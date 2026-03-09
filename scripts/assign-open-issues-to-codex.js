@@ -8,8 +8,6 @@
  *
  * To find Codex user ID: Linear app → Command menu (Cmd+K) → search "Codex" → Copy model UUID
  */
-/* eslint-disable @typescript-eslint/no-require-imports -- Standalone Node script */
-
 const LINEAR_API = "https://api.linear.app/graphql";
 const DONE_TYPES = ["completed", "canceled"];
 

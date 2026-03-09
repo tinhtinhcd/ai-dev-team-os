@@ -92,7 +92,13 @@ export async function PATCH(
       upsertSeries(seriesId, updates);
     }
 
-    const updated = getSeries(seriesId)!;
+    const updated = getSeries(seriesId);
+    if (!updated) {
+      return Response.json(
+        { success: false, error: "Failed to read updated series" },
+        { status: 500 }
+      );
+    }
     return Response.json({
       success: true,
       series: updated,

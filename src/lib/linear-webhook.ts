@@ -180,7 +180,7 @@ export function formatLinearEventForSlack(payload: LinearWebhookPayload): {
     }
   }
 
-  if (type === "Comment" && action === "create") {
+  if ((type === "Comment" || type === "IssueComment") && action === "create") {
     const commentData = data as CommentData;
     const id = commentData.issue?.identifier ?? null;
     return {
