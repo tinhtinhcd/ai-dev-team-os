@@ -7,7 +7,8 @@
     "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js",
     "build": "tsc",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "test:chapters": "tsx src/chapters.test.ts && LOCAL_DB_PATH=./gateway-integration-test.db tsx src/chapters-integration.test.ts"
   },
   "dependencies": {
     "@linear/sdk": "^59.1.0",

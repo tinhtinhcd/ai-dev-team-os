@@ -46,7 +46,19 @@ curl -X POST http://localhost:3000/api/report \
 
 **Expected (with Slack config):** `{"success":true,"message":"Report posted to Slack"}`
 
-### 4. Lint
+### 4. Slack Events API (Van Bot)
+
+```bash
+curl -s -X POST http://localhost:3000/api/slack/events \
+  -H "Content-Type: application/json" \
+  -d '{"type":"url_verification","challenge":"test"}'
+```
+
+**Expected (no Slack config):** `{"error":"Slack not configured"}` — endpoint is reachable and validates config before processing.
+
+**Expected (with SLACK_SIGNING_SECRET):** With valid signature, returns `{"challenge":"test"}` for URL verification. Use ngrok + Slack Event Subscriptions for full flow.
+
+### 5. Lint
 
 ```bash
 npm run lint

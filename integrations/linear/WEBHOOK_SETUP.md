@@ -2,7 +2,16 @@
 
 ## Overview
 
-Linear sends webhook events to the gateway. The gateway parses events and posts structured Slack reports in the mapped thread for each Linear issue.
+Linear sends webhook events to your endpoint. The app parses events and posts structured Slack reports in the mapped thread for each Linear issue.
+
+**Two deployment options:**
+
+| Deployment | Webhook URL | Thread mapping |
+|------------|-------------|----------------|
+| **Next.js app** | `https://your-domain.com/api/webhooks/linear` | JSON file (`LINEAR_THREAD_MAP_PATH`) |
+| **Standalone gateway** | `https://your-host/linear/webhook` | SQLite (auto-populated when creating issues via Slack mention) |
+
+See [gateway/README.md](../../gateway/README.md) for the standalone gateway setup.
 
 ## Events Supported
 
@@ -36,7 +45,7 @@ LINEAR_THREAD_MAP_PATH=./data/linear-thread-map.json
 ### 2. Linear Webhook Configuration
 
 1. Create a webhook in Linear: **Settings → API → Webhooks**
-2. URL: `https://your-domain.com/api/webhooks/linear`
+2. URL: `https://your-domain.com/api/webhooks/linear` (Next.js) or `https://your-host/linear/webhook` (gateway)
 3. Select resource types: **Issues**, **Issue comments**, **Issue attachments**
 4. Copy the webhook secret into `LINEAR_WEBHOOK_SECRET`
 

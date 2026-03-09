@@ -4,18 +4,22 @@
   "private": true,
   "scripts": {
     "sync:open-tickets": "node scripts/sync-open-tickets.js",
+    "assign:open-issues-to-codex": "node scripts/assign-open-issues-to-codex.js",
     "process:open-task": "node scripts/process-open-task.js",
+    "test:open-task": "node scripts/process-open-task.js --dry-run",
     "dev": "next dev",
     "dev:webpack": "next dev --webpack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "test": "bash tests/run.sh",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "setup": "bash scripts/setup-local.sh",
     "smoke": "bash scripts/smoke-test.sh"
   },
   "dependencies": {
     "@slack/web-api": "^7.14.1",
+    "zod": "^3.25.0",
     "@tailwindcss/typography": "^0.5.19",
     "next": "16.1.6",
     "react": "19.2.3",
@@ -30,6 +34,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.0.18"
   }
 }

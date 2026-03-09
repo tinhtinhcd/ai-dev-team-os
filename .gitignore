@@ -43,6 +43,9 @@ yarn-error.log*
 # Linear thread mapping (contains channel/thread IDs)
 /data/linear-thread-map.json
 
+# Series store (runtime data)
+/data/series.json
+
 # Slack reporting state (runtime)
 .slack-threads.json
 .slack-last-sent.json
