@@ -65,10 +65,9 @@ app.event("app_mention", async ({
     }
 
     const linearIssueId = payload.issueId;
-    storeMapping(linearIssueId, channelId, threadTs);
-
     const issue = payload.issue ? await payload.issue : null;
     const identifier = issue?.identifier ?? "unknown";
+    storeMapping(linearIssueId, channelId, threadTs, identifier);
     const url = issue?.url ?? `https://linear.app/issue/${identifier}`;
     await say({
       text: `Created Linear issue: ${identifier} — ${url}`,

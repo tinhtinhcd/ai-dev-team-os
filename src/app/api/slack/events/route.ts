@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { createLinearIssue } from "@/lib/linear";
 import { parseTaskMessage, buildLinearDescription } from "@/lib/slack-task";
+import { setThreadForIssue } from "@/lib/thread-map";
 import { isBotSelfEvent } from "@/lib/slack-reporting";
 
 function verifySlackSignature(body: string, signature: string | null, secret: string): boolean {
@@ -153,6 +154,11 @@ export async function POST(request: NextRequest) {
 
   if (slackBotToken && channel && threadTs) {
     await postSlackMessage(channel, threadTs, confirmMsg, slackBotToken);
+  }
+
+  // Persist Linear–Slack thread mapping for webhook delivery
+  if (result.identifier && channel && threadTs) {
+    setThreadForIssue(result.identifier, channel, threadTs);
   }
 
   return NextResponse.json({ ok: true });

@@ -6,6 +6,7 @@ import {
 } from "@/lib/linear-webhook";
 import { getSlackDestination } from "@/lib/thread-map";
 import { postToSlack } from "@/lib/slack";
+import { storeEvent, updateEventStatus } from "@/lib/event-storage";
 
 // Linear sends signature in "linear-signature" header (per @linear/sdk)
 const SIGNATURE_HEADERS = ["linear-signature", "x-linear-signature", "X-Linear-Signature"] as const;
@@ -44,8 +45,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
+  // Persistent event logging
+  const stored = storeEvent(payload as Record<string, unknown>, "received");
+
   const formatted = formatLinearEventForSlack(payload);
   if (!formatted) {
+    updateEventStatus(stored.id, "skipped");
     return NextResponse.json({ received: true });
   }
 
@@ -53,6 +58,7 @@ export async function POST(request: NextRequest) {
   const dest = issueIdentifier ? getSlackDestination(issueIdentifier) : null;
 
   if (!dest || !dest.channelId) {
+    updateEventStatus(stored.id, "skipped", "No Slack mapping for issue");
     return NextResponse.json({
       received: true,
       skipped: "No Slack mapping for issue",
@@ -66,11 +72,13 @@ export async function POST(request: NextRequest) {
   });
 
   if (!result.ok) {
+    updateEventStatus(stored.id, "failed", result.error);
     return NextResponse.json(
       { received: true, error: result.error },
       { status: 500 }
     );
   }
 
+  updateEventStatus(stored.id, "processed");
   return NextResponse.json({ received: true, posted: true });
 }

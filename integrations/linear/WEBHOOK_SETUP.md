@@ -40,6 +40,9 @@ LINEAR_WEBHOOK_SECRET=...        # Secret from Linear webhook config
 
 # Optional: custom path for thread mapping file
 LINEAR_THREAD_MAP_PATH=./data/linear-thread-map.json
+
+# Optional: path for event log (used for replay/reconciliation)
+LINEAR_EVENTS_PATH=./data/linear-events.json
 ```
 
 ### 2. Linear Webhook Configuration
@@ -65,6 +68,7 @@ Create `data/linear-thread-map.json` (or set `LINEAR_THREAD_MAP_PATH`):
 - `channelId`: Slack channel ID
 - `threadTs`: Parent message timestamp (e.g. from Slack thread URL)
 - Keys are Linear issue identifiers (e.g. TIN-1, TIN-30). See [docs/OPEN_TICKETS.md](../../docs/OPEN_TICKETS.md) for current issues.
+- **Auto-mapping**: When Van Bot creates a Linear issue from an `@mention` in Slack, the mapping is stored automatically.
 
 ### 4. Slack App
 
@@ -76,8 +80,16 @@ Create `data/linear-thread-map.json` (or set `LINEAR_THREAD_MAP_PATH`):
 ## Webhook Endpoint
 
 - **POST** `/api/webhooks/linear`
-- Returns `200` with `{ received: true }` on success
+- Returns `200` with `{ received: true }` or `{ received: true, posted: true }` on success
 - Returns `401` if signature verification fails (when `LINEAR_WEBHOOK_SECRET` is set)
+- All events are logged persistently for replay and reconciliation.
+
+## Event Replay (Reconciliation)
+
+Failed or skipped events can be replayed:
+
+- **GET** `/api/webhooks/linear/replay` — Query stored events (params: `issueIdentifier`, `status`, `since`, `limit`)
+- **POST** `/api/webhooks/linear/replay` — Replay failed/skipped events (params: `issueIdentifier`, `status`, `since`, `limit`)
 
 ## Local Development
 
