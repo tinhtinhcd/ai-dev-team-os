@@ -1,40 +1,57 @@
 import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
+import {
+  verifyLinearSignature,
+} from "@/lib/signatures";
 import {
   type LinearWebhookPayload,
   formatLinearEventForSlack,
 } from "@/lib/linear-webhook";
 import { getSlackDestination } from "@/lib/thread-map";
 import { postToSlack } from "@/lib/slack";
+import {
+  getLinearWebhookSecret,
+  isLinearWebhookVerificationRequired,
+} from "@/lib/config";
+import {
+  checkRateLimit,
+  DEFAULT_RATE_LIMIT,
+} from "@/lib/rate-limit";
 import { storeEvent, updateEventStatus } from "@/lib/event-storage";
 
 // Linear sends signature in "linear-signature" header (per @linear/sdk)
 const SIGNATURE_HEADERS = ["linear-signature", "x-linear-signature", "X-Linear-Signature"] as const;
 
-function verifySignature(rawBody: string, signature: string | null, secret: string): boolean {
-  if (!secret || !signature) {
-    return false;
-  }
-  const hmac = crypto.createHmac("sha256", secret);
-  hmac.update(rawBody);
-  const digest = hmac.digest("hex");
-  if (digest.length !== signature.length) {
-    return false;
-  }
-  try {
-    return crypto.timingSafeEqual(Buffer.from(digest, "hex"), Buffer.from(signature, "hex"));
-  } catch {
-    return false;
-  }
+function getRateLimitKey(request: NextRequest): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  const realIp = request.headers.get("x-real-ip");
+  return forwarded?.split(",")[0]?.trim() ?? realIp ?? "unknown";
 }
 
 export async function POST(request: NextRequest) {
-  const secret = process.env.LINEAR_WEBHOOK_SECRET;
+  const key = getRateLimitKey(request);
+  const limit = checkRateLimit({
+    ...DEFAULT_RATE_LIMIT,
+    key: `linear:${key}`,
+  });
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { error: "Rate limit exceeded" },
+      { status: 429 }
+    );
+  }
+
+  const secret = getLinearWebhookSecret();
   const rawBody = await request.text();
   const signature =
     SIGNATURE_HEADERS.map((h) => request.headers.get(h)).find(Boolean) ?? null;
 
-  if (secret && !verifySignature(rawBody, signature, secret)) {
+  if (isLinearWebhookVerificationRequired() && !secret) {
+    return NextResponse.json(
+      { error: "Linear webhook not configured" },
+      { status: 503 }
+    );
+  }
+  if (secret && !verifyLinearSignature(rawBody, signature, secret)) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
