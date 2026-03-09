@@ -28,11 +28,20 @@ Event-driven AI development team: Linear manages tasks, Cursor executes code, Sl
 ### Quick Start
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The gateway health check is at [http://localhost:3000/api/gateway/health](http://localhost:3000/api/gateway/health). See [Local Testing Guide](docs/LOCAL_TESTING.md) for verification steps.
+Use `npm ci` for reproducible installs (requires `package-lock.json`). Open [http://localhost:3000](http://localhost:3000). The gateway health check is at [http://localhost:3000/api/gateway/health](http://localhost:3000/api/gateway/health). See [Local Testing Guide](docs/LOCAL_TESTING.md) for verification steps.
+
+### Development Validation Checklist
+
+Before merging local setup changes, verify:
+
+- [ ] **Clean install** — `npm ci` completes without errors
+- [ ] **Lint & build** — `npm run lint` and `npm run build` pass
+- [ ] **Smoke test** — Dev server starts, health check responds
+- [ ] **Docs updated** — README and setup guides reflect any changes
 
 ### Available Scripts
 
