@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
-  const payload = JSON.parse(rawBody) as {
+  let payload: {
     type?: string;
     challenge?: string;
     event?: {
@@ -63,6 +63,11 @@ export async function POST(request: NextRequest) {
       thread_ts?: string;
     };
   };
+  try {
+    payload = JSON.parse(rawBody) as typeof payload;
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
 
   if (payload.type === "url_verification") {
     return NextResponse.json({ challenge: payload.challenge });
