@@ -3,6 +3,7 @@
  * Process .md files in open-task/ → create Linear issues, move to open-task-processed/
  *
  * Run: LINEAR_API_KEY=... LINEAR_TEAM_ID=... node scripts/process-open-task.js
+ * Dry-run (no API, no file moves): node scripts/process-open-task.js --dry-run
  *
  * - Chỉ xử lý file .md trong open-task/
  * - Parse title (dòng đầu hoặc # đầu tiên) + description
@@ -14,6 +15,8 @@
 
 const fs = require("fs");
 const path = require("path");
+
+const DRY_RUN = process.argv.includes("--dry-run");
 
 const OPEN_TASK_DIR = path.join(process.cwd(), "open-task");
 const PROCESSED_DIR = path.join(process.cwd(), "open-task-processed");
@@ -133,13 +136,15 @@ async function main() {
   const apiKey = process.env.LINEAR_API_KEY;
   const teamId = process.env.LINEAR_TEAM_ID;
 
-  if (!apiKey) {
-    console.error("LINEAR_API_KEY is required.");
-    process.exit(1);
-  }
-  if (!teamId) {
-    console.error("LINEAR_TEAM_ID is required.");
-    process.exit(1);
+  if (!DRY_RUN) {
+    if (!apiKey) {
+      console.error("LINEAR_API_KEY is required.");
+      process.exit(1);
+    }
+    if (!teamId) {
+      console.error("LINEAR_TEAM_ID is required.");
+      process.exit(1);
+    }
   }
 
   const files = getMdFiles(OPEN_TASK_DIR);
@@ -148,12 +153,23 @@ async function main() {
     return;
   }
 
-  fs.mkdirSync(PROCESSED_DIR, { recursive: true });
+  if (DRY_RUN) {
+    console.log(`[DRY-RUN] Would process ${files.length} file(s):`);
+  }
+
+  if (!DRY_RUN) {
+    fs.mkdirSync(PROCESSED_DIR, { recursive: true });
+  }
 
   for (const filePath of files) {
     const filename = path.basename(filePath);
     const content = fs.readFileSync(filePath, "utf8");
     const { title, description } = parseMarkdown(content, filename);
+
+    if (DRY_RUN) {
+      console.log(`  - ${filename} → title: "${title}" (${description.length} chars)`);
+      continue;
+    }
 
     let issueId;
     const existing = await findExistingIssue(apiKey, teamId, title);
@@ -169,6 +185,10 @@ async function main() {
     const destPath = path.join(PROCESSED_DIR, filename);
     fs.renameSync(filePath, destPath);
     console.log(`[MOVED] ${filename} → open-task-processed/`);
+  }
+
+  if (DRY_RUN) {
+    console.log("[DRY-RUN] No files were moved or issues created.");
   }
 }
 
