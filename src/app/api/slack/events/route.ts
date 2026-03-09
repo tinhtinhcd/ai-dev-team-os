@@ -61,6 +61,7 @@ export async function POST(request: NextRequest) {
       channel?: string;
       ts?: string;
       thread_ts?: string;
+      bot_id?: string;
     };
   };
   try {
@@ -78,6 +79,10 @@ export async function POST(request: NextRequest) {
   }
 
   const event = payload.event;
+  if (event.bot_id) {
+    return NextResponse.json({ ok: true });
+  }
+
   const text = event.text ?? "";
   const channel = event.channel ?? "";
   const threadTs = event.thread_ts ?? event.ts ?? "";

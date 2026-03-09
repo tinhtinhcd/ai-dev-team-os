@@ -52,6 +52,7 @@ Before merging local setup changes, verify:
 | `npm run build` | Build for production |
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint |
+| `npm test` | Run unit tests (Vitest) |
 | `npm run sync:open-tickets` | Sync open tickets from Linear to docs/OPEN_TICKETS.md |
 | `npm run test:open-task` | Dry-run: validate open-task parsing (no API, no file moves) |
 | `npm run assign:open-issues-to-codex` | Assign all open issues to Codex (requires LINEAR_CODEX_USER_ID) |
