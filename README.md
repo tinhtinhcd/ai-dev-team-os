@@ -11,11 +11,15 @@ Event-driven AI development team: Linear manages tasks, Cursor executes code, Sl
 
 ## Setup Guides
 
+- [Phase 1 MVP Task Breakdown](docs/PHASE1_MVP_LINEAR_TASK_BREAKDOWN.md) — Linear task breakdown (TIN-17), execution order, @Leo review
+- **Google OAuth** — Sign in with Google. Set `AUTH_SECRET` (generate with `openssl rand -base64 32`), `GOOGLE_CLIENT_ID`, and `GOOGLE_CLIENT_SECRET` in `.env`. Create OAuth credentials at [Google Cloud Console](https://console.cloud.google.com/) and add redirect URI `http://localhost:3000/api/auth/callback/google`.
 - [Slack App Setup](docs/SLACK_APP_SETUP.md) — Scopes, events, thread-only replies, target channel `#team-leo`
 - [Linear Webhook Setup](integrations/linear/WEBHOOK_SETUP.md) — Webhook config and thread mapping
 - [Open Tickets](docs/OPEN_TICKETS.md) — Current backlog from Linear (sync with `npm run sync:open-tickets`)
+- [Open Issues Task Breakdown](docs/OPEN_ISSUES_TASK_BREAKDOWN.md) — Task breakdowns for open issues, assigned to Codex
+- [Open Task → Linear](docs/OPEN_TASK_AUTOMATION.md) — Automation: thêm file .md vào `open-task/` → tạo issue Linear
 
-## How to Run Locally
+## Local Development
 
 ### Prerequisites
 
@@ -25,11 +29,80 @@ Event-driven AI development team: Linear manages tasks, Cursor executes code, Sl
 ### Quick Start
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The gateway health check is at [http://localhost:3000/api/gateway/health](http://localhost:3000/api/gateway/health). See [Local Testing Guide](docs/LOCAL_TESTING.md) for verification steps.
+Use `npm ci` for reproducible installs (requires `package-lock.json`). Open [http://localhost:3000](http://localhost:3000). The gateway health check is at [http://localhost:3000/api/gateway/health](http://localhost:3000/api/gateway/health). See [Local Testing Guide](docs/LOCAL_TESTING.md) for verification steps.
+
+### One-Command Setup (Fresh Clone)
+
+From a fresh clone, run the setup script to initialize `.env`, install dependencies, and build:
+
+```bash
+npm run setup
+# or: bash scripts/setup-local.sh
+```
+
+Then start the dev server:
+
+```bash
+npm run dev
+```
+
+### Manual Setup
+
+1. Copy `.env.example` to `.env` (optional; app runs without env vars; add Slack/Linear keys when needed)
+2. `npm install` and `cd gateway && npm install`
+3. `npm run build` and `cd gateway && npm run build`
+4. `npm run dev`
+
+### Docker
+
+Build and run the app in a container:
+
+```bash
+docker compose --profile full up -d
+```
+
+Or build the image only:
+
+```bash
+docker build -t ai-dev-team-os .
+docker run -p 3000:3000 ai-dev-team-os
+```
+
+### Dev Containers (VS Code)
+
+Open the repo in VS Code and use **Dev Containers** (Remote - Containers extension). The devcontainer will:
+
+- Use Node.js 22
+- Run `scripts/setup-local.sh` on first create
+- Forward port 3000 for the Next.js app
+
+### CI Pipeline
+
+The [`.github/workflows/ci.yml`](.github/workflows/ci.yml) pipeline runs on push/PR to `master` or `main`:
+
+1. Install dependencies (root + gateway)
+2. Lint (root + gateway)
+3. Run test suite (`tests/run.sh`)
+4. Build (root + gateway)
+
+### Validation
+
+- **Smoke test:** `npm run smoke` — runs build + lint for root and gateway
+- **Full tests:** `npm run test` — runs the automated test suite
+- **Verification:** See [Local Testing Guide](docs/LOCAL_TESTING.md) for API checks
+
+### Development Validation Checklist
+
+Before merging local setup changes, verify:
+
+- [ ] **Clean install** — `npm ci` completes without errors
+- [ ] **Lint & build** — `npm run lint` and `npm run build` pass
+- [ ] **Smoke test** — Dev server starts, health check responds
+- [ ] **Docs updated** — README and setup guides reflect any changes
 
 ### Available Scripts
 
@@ -40,7 +113,13 @@ Open [http://localhost:3000](http://localhost:3000). The gateway health check is
 | `npm run build` | Build for production |
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint |
+| `npm test` | Run unit tests (Vitest) |
+| `npm run setup` | One-command local setup |
+| `npm run smoke` | Smoke test (build + lint) |
 | `npm run sync:open-tickets` | Sync open tickets from Linear to docs/OPEN_TICKETS.md |
+| `npm run test:open-task` | Dry-run: validate open-task parsing (no API, no file moves) |
+| `npm run assign:open-issues-to-codex` | Assign all open issues to Codex (requires LINEAR_CODEX_USER_ID) |
+| `npm run process:open-task` | Process .md files in open-task/ → create Linear issues (local) |
 
 ## Project Structure
 
@@ -51,7 +130,12 @@ Open [http://localhost:3000](http://localhost:3000). The gateway health check is
 │   ├── slack/
 │   └── cursor/
 ├── storage/           # Event persistence
+├── scripts/           # Sync and automation scripts
+├── data/              # Local data and mappings
+├── open-task/         # .md files → Linear issues (GitHub Action)
 ├── archive/           # Legacy code (see archive/ARCHIVE.md)
+├── .github/           # GitHub Actions (open-task automation)
+├── docs/              # Setup guides and documentation
 ├── src/
 │   ├── app/           # Next.js App Router
 │   │   ├── api/       # API routes (gateway health, etc.)

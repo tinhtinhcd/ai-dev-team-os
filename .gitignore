@@ -45,6 +45,9 @@ yarn-error.log*
 # Linear event log (runtime, for replay)
 /data/linear-events.json
 
+# Series store (runtime data)
+/data/series.json
+
 # Slack reporting state (runtime)
 .slack-threads.json
 .slack-last-sent.json

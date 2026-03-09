@@ -1,0 +1,12 @@
+node_modules
+gateway/node_modules
+.next
+gateway/dist
+.git
+.env
+.env.local
+.env.*.local
+*.md
+archive
+coverage
+.vercel

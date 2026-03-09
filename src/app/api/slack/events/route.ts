@@ -3,6 +3,7 @@ import crypto from "crypto";
 import { createLinearIssue } from "@/lib/linear";
 import { parseTaskMessage, buildLinearDescription } from "@/lib/slack-task";
 import { setThreadForIssue } from "@/lib/thread-map";
+import { isBotSelfEvent } from "@/lib/slack-reporting";
 
 function verifySlackSignature(body: string, signature: string | null, secret: string): boolean {
   if (!signature || !secret) return false;
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
-  const payload = JSON.parse(rawBody) as {
+  let payload: {
     type?: string;
     challenge?: string;
     event?: {
@@ -62,8 +63,15 @@ export async function POST(request: NextRequest) {
       channel?: string;
       ts?: string;
       thread_ts?: string;
+      user?: string;
+      bot_id?: string;
     };
   };
+  try {
+    payload = JSON.parse(rawBody) as typeof payload;
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
 
   if (payload.type === "url_verification") {
     return NextResponse.json({ challenge: payload.challenge });
@@ -74,6 +82,16 @@ export async function POST(request: NextRequest) {
   }
 
   const event = payload.event;
+
+  if (event.bot_id) {
+    return NextResponse.json({ ok: true });
+  }
+  // Ignore bot self-events to prevent loops
+  const botUserId = process.env.SLACK_BOT_USER_ID;
+  if (botUserId && isBotSelfEvent(botUserId, event.user)) {
+    return NextResponse.json({ ok: true });
+  }
+
   const text = event.text ?? "";
   const channel = event.channel ?? "";
   const threadTs = event.thread_ts ?? event.ts ?? "";

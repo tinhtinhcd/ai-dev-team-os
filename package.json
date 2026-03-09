@@ -4,18 +4,25 @@
   "private": true,
   "scripts": {
     "sync:open-tickets": "node scripts/sync-open-tickets.js",
+    "assign:open-issues-to-codex": "node scripts/assign-open-issues-to-codex.js",
+    "process:open-task": "node scripts/process-open-task.js",
+    "test:open-task": "node scripts/process-open-task.js --dry-run",
     "dev": "next dev",
     "dev:webpack": "next dev --webpack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "setup": "bash scripts/setup-local.sh",
+    "smoke": "bash scripts/smoke-test.sh"
   },
   "dependencies": {
     "@slack/web-api": "^7.14.1",
+    "zod": "^3.25.0",
     "@tailwindcss/typography": "^0.5.19",
     "next": "16.1.6",
+    "next-auth": "^5.0.0-beta.30",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-markdown": "^10.1.0"
