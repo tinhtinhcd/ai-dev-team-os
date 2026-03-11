@@ -209,6 +209,22 @@ describe("formatLinearEventForSlack", () => {
     expect(result!.message).toContain("Comment");
   });
 
+  it("routes IssueComment create (Linear alternate type)", () => {
+    const payload: LinearWebhookPayload = {
+      action: "create",
+      type: "IssueComment",
+      data: {
+        body: "Follow-up",
+        issue: { identifier: "TIN-42" },
+        user: { displayName: "Bob" },
+      },
+    };
+    const result = formatLinearEventForSlack(payload);
+    expect(result).not.toBeNull();
+    expect(result!.issueIdentifier).toBe("TIN-42");
+    expect(result!.message).toContain("Comment on TIN-42");
+  });
+
   it("routes IssueAttachment create for PR link", () => {
     const payload: LinearWebhookPayload = {
       action: "create",
