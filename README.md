@@ -177,6 +177,7 @@ The system will:
 4. Install the app to your workspace and copy the Bot Token
 5. Add env vars (see `.env.example`): `SLACK_SIGNING_SECRET`, `SLACK_BOT_TOKEN`, `LINEAR_API_KEY`, `LINEAR_TEAM_ID`, `LINEAR_CURSOR_USER_ID` (optional)
 
+<<<<<<< HEAD
 ### Slack Reporting (TIN-11)
 
 Agents report status changes to Slack via the gateway API. Format:
@@ -200,6 +201,8 @@ curl -X POST http://localhost:3000/api/report \
 
 Set `SLACK_BOT_TOKEN` and `SLACK_CHANNEL` in `.env` (see `.env.example`).
 
+=======
+>>>>>>> origin/cursor/TIN-9-slack-linear-issue-flow-b9e8
 ## Tech Stack
 
 - **Next.js** 16 (App Router)
