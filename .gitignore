@@ -52,6 +52,9 @@ yarn-error.log*
 .slack-threads.json
 .slack-last-sent.json
 
+# Series store (runtime data)
+/data/series.json
+
 # Slack reporting state (runtime)
 .slack-threads.json
 .slack-last-sent.json
