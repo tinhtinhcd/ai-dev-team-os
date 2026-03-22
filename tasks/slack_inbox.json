@@ -1,0 +1,52 @@
+[
+  {
+    "id": "slack_1771571117307_dys3qm",
+    "eventKey": "C0ABQLYUE0K:1771571113.823129",
+    "channelId": "C0ABQLYUE0K",
+    "threadTs": "1771571113.823129",
+    "requesterUserId": "U0ACRBNH0QY",
+    "text": "update readme file queue-worker final-test *Sent using* Cursor",
+    "createdAt": "2026-02-20T07:05:17.307Z",
+    "status": "done",
+    "attempts": 1,
+    "lastError": null,
+    "result": {
+      "action": "update_readme",
+      "filesChanged": [
+        "README.md"
+      ]
+    },
+    "startedAt": "2026-02-20T07:05:19.255Z",
+    "completedAt": "2026-02-20T07:05:19.259Z"
+  },
+  {
+    "id": "slack_1771571265430_ou3im8",
+    "eventKey": "C0ABQLYUE0K:1771571261.922169",
+    "channelId": "C0ABQLYUE0K",
+    "threadTs": "1771571113.823129",
+    "requesterUserId": "U0ACRBNH0QY",
+    "text": "update ticket in Trello then ask work on it",
+    "createdAt": "2026-02-20T07:07:45.430Z",
+    "status": "failed",
+    "attempts": 1,
+    "lastError": "Execution blocked: unsupported task type for autonomous worker. Supported now: update README file.",
+    "result": null,
+    "startedAt": "2026-02-20T07:07:47.572Z",
+    "failedAt": "2026-02-20T07:07:47.573Z"
+  },
+  {
+    "id": "slack_1771571950126_fi6fd0",
+    "eventKey": "C0ABQLYUE0K:1771571945.039159",
+    "channelId": "C0ABQLYUE0K",
+    "threadTs": "1771571945.039159",
+    "requesterUserId": "U0ACRBNH0QY",
+    "text": "are you able to code",
+    "createdAt": "2026-02-20T07:19:10.126Z",
+    "status": "failed",
+    "attempts": 1,
+    "lastError": "Execution blocked: unsupported task type for autonomous worker. Supported now: update README file.",
+    "result": null,
+    "startedAt": "2026-02-20T07:19:11.120Z",
+    "failedAt": "2026-02-20T07:19:11.122Z"
+  }
+]

@@ -1,0 +1,2908 @@
+{
+  "version": 2,
+  "lastProcessedByteOffset": 27729,
+  "pendingLine": "",
+  "days": {
+    "2026-02-19": {
+      "date": "2026-02-19",
+      "tokens": 20464,
+      "calls": 34,
+      "byRole": {
+        "architect": {
+          "tokens": 14624,
+          "calls": 29
+        },
+        "engineer": {
+          "tokens": 3570,
+          "calls": 3
+        },
+        "reviewer": {
+          "tokens": 2270,
+          "calls": 2
+        }
+      },
+      "byAction": {
+        "plan_task": {
+          "tokens": 1940,
+          "calls": 2
+        },
+        "implement_task": {
+          "tokens": 2160,
+          "calls": 2
+        },
+        "review_pr": {
+          "tokens": 2380,
+          "calls": 2
+        },
+        "debug_issue": {
+          "tokens": 2600,
+          "calls": 2
+        },
+        "test": {
+          "tokens": 7838,
+          "calls": 3
+        },
+        "slack_mention": {
+          "tokens": 3546,
+          "calls": 23
+        }
+      },
+      "byRoleAction": {
+        "architect::plan_task": {
+          "tokens": 750,
+          "calls": 1
+        },
+        "engineer::implement_task": {
+          "tokens": 860,
+          "calls": 1
+        },
+        "reviewer::review_pr": {
+          "tokens": 970,
+          "calls": 1
+        },
+        "architect::debug_issue": {
+          "tokens": 1080,
+          "calls": 1
+        },
+        "engineer::plan_task": {
+          "tokens": 1190,
+          "calls": 1
+        },
+        "reviewer::implement_task": {
+          "tokens": 1300,
+          "calls": 1
+        },
+        "architect::review_pr": {
+          "tokens": 1410,
+          "calls": 1
+        },
+        "engineer::debug_issue": {
+          "tokens": 1520,
+          "calls": 1
+        },
+        "architect::test": {
+          "tokens": 7838,
+          "calls": 3
+        },
+        "architect::slack_mention": {
+          "tokens": 3546,
+          "calls": 23
+        }
+      },
+      "tasks": {
+        "TASK-100": {
+          "taskId": "TASK-100",
+          "tokens": 750,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 750,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "plan_task": {
+              "tokens": 750,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 750,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::plan_task": {
+              "tokens": 750,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-101": {
+          "taskId": "TASK-101",
+          "tokens": 860,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 860,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "implement_task": {
+              "tokens": 860,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 860,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::implement_task": {
+              "tokens": 860,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-102": {
+          "taskId": "TASK-102",
+          "tokens": 970,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 970,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "review_pr": {
+              "tokens": 970,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 970,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::review_pr": {
+              "tokens": 970,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-103": {
+          "taskId": "TASK-103",
+          "tokens": 1080,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1080,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "debug_issue": {
+              "tokens": 1080,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1080,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::debug_issue": {
+              "tokens": 1080,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-104": {
+          "taskId": "TASK-104",
+          "tokens": 1190,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1190,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "plan_task": {
+              "tokens": 1190,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1190,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::plan_task": {
+              "tokens": 1190,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-105": {
+          "taskId": "TASK-105",
+          "tokens": 1300,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 1300,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "implement_task": {
+              "tokens": 1300,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 1300,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::implement_task": {
+              "tokens": 1300,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-106": {
+          "taskId": "TASK-106",
+          "tokens": 1410,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1410,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "review_pr": {
+              "tokens": 1410,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1410,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::review_pr": {
+              "tokens": 1410,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-107": {
+          "taskId": "TASK-107",
+          "tokens": 1520,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1520,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "debug_issue": {
+              "tokens": 1520,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1520,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::debug_issue": {
+              "tokens": 1520,
+              "calls": 1
+            }
+          }
+        },
+        "test:manual": {
+          "taskId": "test:manual",
+          "tokens": 7838,
+          "calls": 3,
+          "byRole": {
+            "architect": {
+              "tokens": 7838,
+              "calls": 3
+            }
+          },
+          "byAction": {
+            "test": {
+              "tokens": 7838,
+              "calls": 3
+            }
+          },
+          "byModel": {
+            "local-test-model": {
+              "tokens": 7838,
+              "calls": 3
+            }
+          },
+          "byRoleAction": {
+            "architect::test": {
+              "tokens": 7838,
+              "calls": 3
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771509012.704409": {
+          "taskId": "D0AC3GSJXJ6:1771509012.704409",
+          "tokens": 0,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "meta-llama/llama-3.1-8b-instruct:free": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 0,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771509137.001729": {
+          "taskId": "D0AC3GSJXJ6:1771509137.001729",
+          "tokens": 644,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 644,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 644,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "openrouter/auto": {
+              "tokens": 644,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 644,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771509586.729739": {
+          "taskId": "D0AC3GSJXJ6:1771509586.729739",
+          "tokens": 0,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "openrouter/auto": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 0,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771509744.597959": {
+          "taskId": "D0AC3GSJXJ6:1771509744.597959",
+          "tokens": 0,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "meta-llama/llama-3.3-70b-instruct:free": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 0,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771510145.925769": {
+          "taskId": "D0AC3GSJXJ6:1771510145.925769",
+          "tokens": 0,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "meta-llama/llama-3.3-70b-instruct:free": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 0,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771510307.856229": {
+          "taskId": "D0AC3GSJXJ6:1771510307.856229",
+          "tokens": 0,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "meta-llama/llama-3.3-70b-instruct:free": {
+              "tokens": 0,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 0,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771510614.273389": {
+          "taskId": "D0AC3GSJXJ6:1771510614.273389",
+          "tokens": 69,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 69,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 69,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 69,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 69,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771510895.846489": {
+          "taskId": "D0AC3GSJXJ6:1771510895.846489",
+          "tokens": 68,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 68,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 68,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 68,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 68,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771510897.432409": {
+          "taskId": "D0AC3GSJXJ6:1771510897.432409",
+          "tokens": 170,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 170,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 170,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 170,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 170,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771510915.147589": {
+          "taskId": "D0AC3GSJXJ6:1771510915.147589",
+          "tokens": 274,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 274,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 274,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 274,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 274,
+              "calls": 1
+            }
+          }
+        },
+        "C0ABQLYUE0K:1771511311.997719": {
+          "taskId": "C0ABQLYUE0K:1771511311.997719",
+          "tokens": 219,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 219,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 219,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 219,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 219,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771511401.346359": {
+          "taskId": "D0AC3GSJXJ6:1771511401.346359",
+          "tokens": 68,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 68,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 68,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 68,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 68,
+              "calls": 1
+            }
+          }
+        },
+        "C0ABQLYUE0K:1771511419.869599": {
+          "taskId": "C0ABQLYUE0K:1771511419.869599",
+          "tokens": 136,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 136,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 136,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 136,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 136,
+              "calls": 1
+            }
+          }
+        },
+        "C0ABQLYUE0K:1771511671.501649": {
+          "taskId": "C0ABQLYUE0K:1771511671.501649",
+          "tokens": 199,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 199,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 199,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 199,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 199,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771511714.289519": {
+          "taskId": "D0AC3GSJXJ6:1771511714.289519",
+          "tokens": 188,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 188,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 188,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 188,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 188,
+              "calls": 1
+            }
+          }
+        },
+        "C0ABQLYUE0K:1771511979.623019": {
+          "taskId": "C0ABQLYUE0K:1771511979.623019",
+          "tokens": 544,
+          "calls": 3,
+          "byRole": {
+            "architect": {
+              "tokens": 544,
+              "calls": 3
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 544,
+              "calls": 3
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 544,
+              "calls": 3
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 544,
+              "calls": 3
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771512196.332769": {
+          "taskId": "D0AC3GSJXJ6:1771512196.332769",
+          "tokens": 205,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 205,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 205,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 205,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 205,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771511717.094099": {
+          "taskId": "D0AC3GSJXJ6:1771511717.094099",
+          "tokens": 212,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 212,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 212,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 212,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 212,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771512975.341849": {
+          "taskId": "D0AC3GSJXJ6:1771512975.341849",
+          "tokens": 181,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 181,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 181,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 181,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 181,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771513014.759449": {
+          "taskId": "D0AC3GSJXJ6:1771513014.759449",
+          "tokens": 181,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 181,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 181,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 181,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 181,
+              "calls": 1
+            }
+          }
+        },
+        "D0AC3GSJXJ6:1771513006.560999": {
+          "taskId": "D0AC3GSJXJ6:1771513006.560999",
+          "tokens": 188,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 188,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 188,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 188,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 188,
+              "calls": 1
+            }
+          }
+        }
+      }
+    },
+    "2026-02-18": {
+      "date": "2026-02-18",
+      "tokens": 9320,
+      "calls": 8,
+      "byRole": {
+        "engineer": {
+          "tokens": 3330,
+          "calls": 3
+        },
+        "reviewer": {
+          "tokens": 3660,
+          "calls": 3
+        },
+        "architect": {
+          "tokens": 2330,
+          "calls": 2
+        }
+      },
+      "byAction": {
+        "implement_task": {
+          "tokens": 2000,
+          "calls": 2
+        },
+        "review_pr": {
+          "tokens": 2220,
+          "calls": 2
+        },
+        "debug_issue": {
+          "tokens": 2440,
+          "calls": 2
+        },
+        "plan_task": {
+          "tokens": 2660,
+          "calls": 2
+        }
+      },
+      "byRoleAction": {
+        "engineer::implement_task": {
+          "tokens": 780,
+          "calls": 1
+        },
+        "reviewer::review_pr": {
+          "tokens": 890,
+          "calls": 1
+        },
+        "architect::debug_issue": {
+          "tokens": 1000,
+          "calls": 1
+        },
+        "engineer::plan_task": {
+          "tokens": 1110,
+          "calls": 1
+        },
+        "reviewer::implement_task": {
+          "tokens": 1220,
+          "calls": 1
+        },
+        "architect::review_pr": {
+          "tokens": 1330,
+          "calls": 1
+        },
+        "engineer::debug_issue": {
+          "tokens": 1440,
+          "calls": 1
+        },
+        "reviewer::plan_task": {
+          "tokens": 1550,
+          "calls": 1
+        }
+      },
+      "tasks": {
+        "TASK-101": {
+          "taskId": "TASK-101",
+          "tokens": 780,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 780,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "implement_task": {
+              "tokens": 780,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 780,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::implement_task": {
+              "tokens": 780,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-102": {
+          "taskId": "TASK-102",
+          "tokens": 890,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 890,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "review_pr": {
+              "tokens": 890,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 890,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::review_pr": {
+              "tokens": 890,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-103": {
+          "taskId": "TASK-103",
+          "tokens": 1000,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1000,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "debug_issue": {
+              "tokens": 1000,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1000,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::debug_issue": {
+              "tokens": 1000,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-104": {
+          "taskId": "TASK-104",
+          "tokens": 1110,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1110,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "plan_task": {
+              "tokens": 1110,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1110,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::plan_task": {
+              "tokens": 1110,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-105": {
+          "taskId": "TASK-105",
+          "tokens": 1220,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 1220,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "implement_task": {
+              "tokens": 1220,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 1220,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::implement_task": {
+              "tokens": 1220,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-106": {
+          "taskId": "TASK-106",
+          "tokens": 1330,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1330,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "review_pr": {
+              "tokens": 1330,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1330,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::review_pr": {
+              "tokens": 1330,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-107": {
+          "taskId": "TASK-107",
+          "tokens": 1440,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1440,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "debug_issue": {
+              "tokens": 1440,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1440,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::debug_issue": {
+              "tokens": 1440,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-108": {
+          "taskId": "TASK-108",
+          "tokens": 1550,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 1550,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "plan_task": {
+              "tokens": 1550,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 1550,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::plan_task": {
+              "tokens": 1550,
+              "calls": 1
+            }
+          }
+        }
+      }
+    },
+    "2026-02-17": {
+      "date": "2026-02-17",
+      "tokens": 9560,
+      "calls": 8,
+      "byRole": {
+        "reviewer": {
+          "tokens": 3420,
+          "calls": 3
+        },
+        "architect": {
+          "tokens": 3750,
+          "calls": 3
+        },
+        "engineer": {
+          "tokens": 2390,
+          "calls": 2
+        }
+      },
+      "byAction": {
+        "review_pr": {
+          "tokens": 2060,
+          "calls": 2
+        },
+        "debug_issue": {
+          "tokens": 2280,
+          "calls": 2
+        },
+        "plan_task": {
+          "tokens": 2500,
+          "calls": 2
+        },
+        "implement_task": {
+          "tokens": 2720,
+          "calls": 2
+        }
+      },
+      "byRoleAction": {
+        "reviewer::review_pr": {
+          "tokens": 810,
+          "calls": 1
+        },
+        "architect::debug_issue": {
+          "tokens": 920,
+          "calls": 1
+        },
+        "engineer::plan_task": {
+          "tokens": 1030,
+          "calls": 1
+        },
+        "reviewer::implement_task": {
+          "tokens": 1140,
+          "calls": 1
+        },
+        "architect::review_pr": {
+          "tokens": 1250,
+          "calls": 1
+        },
+        "engineer::debug_issue": {
+          "tokens": 1360,
+          "calls": 1
+        },
+        "reviewer::plan_task": {
+          "tokens": 1470,
+          "calls": 1
+        },
+        "architect::implement_task": {
+          "tokens": 1580,
+          "calls": 1
+        }
+      },
+      "tasks": {
+        "TASK-102": {
+          "taskId": "TASK-102",
+          "tokens": 810,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 810,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "review_pr": {
+              "tokens": 810,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 810,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::review_pr": {
+              "tokens": 810,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-103": {
+          "taskId": "TASK-103",
+          "tokens": 920,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 920,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "debug_issue": {
+              "tokens": 920,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 920,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::debug_issue": {
+              "tokens": 920,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-104": {
+          "taskId": "TASK-104",
+          "tokens": 1030,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1030,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "plan_task": {
+              "tokens": 1030,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1030,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::plan_task": {
+              "tokens": 1030,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-105": {
+          "taskId": "TASK-105",
+          "tokens": 1140,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 1140,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "implement_task": {
+              "tokens": 1140,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 1140,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::implement_task": {
+              "tokens": 1140,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-106": {
+          "taskId": "TASK-106",
+          "tokens": 1250,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1250,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "review_pr": {
+              "tokens": 1250,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1250,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::review_pr": {
+              "tokens": 1250,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-107": {
+          "taskId": "TASK-107",
+          "tokens": 1360,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1360,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "debug_issue": {
+              "tokens": 1360,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1360,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::debug_issue": {
+              "tokens": 1360,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-108": {
+          "taskId": "TASK-108",
+          "tokens": 1470,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 1470,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "plan_task": {
+              "tokens": 1470,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 1470,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::plan_task": {
+              "tokens": 1470,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-109": {
+          "taskId": "TASK-109",
+          "tokens": 1580,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1580,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "implement_task": {
+              "tokens": 1580,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1580,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::implement_task": {
+              "tokens": 1580,
+              "calls": 1
+            }
+          }
+        }
+      }
+    },
+    "2026-02-16": {
+      "date": "2026-02-16",
+      "tokens": 9800,
+      "calls": 8,
+      "byRole": {
+        "architect": {
+          "tokens": 3510,
+          "calls": 3
+        },
+        "engineer": {
+          "tokens": 3840,
+          "calls": 3
+        },
+        "reviewer": {
+          "tokens": 2450,
+          "calls": 2
+        }
+      },
+      "byAction": {
+        "debug_issue": {
+          "tokens": 2120,
+          "calls": 2
+        },
+        "plan_task": {
+          "tokens": 2340,
+          "calls": 2
+        },
+        "implement_task": {
+          "tokens": 2560,
+          "calls": 2
+        },
+        "review_pr": {
+          "tokens": 2780,
+          "calls": 2
+        }
+      },
+      "byRoleAction": {
+        "architect::debug_issue": {
+          "tokens": 840,
+          "calls": 1
+        },
+        "engineer::plan_task": {
+          "tokens": 950,
+          "calls": 1
+        },
+        "reviewer::implement_task": {
+          "tokens": 1060,
+          "calls": 1
+        },
+        "architect::review_pr": {
+          "tokens": 1170,
+          "calls": 1
+        },
+        "engineer::debug_issue": {
+          "tokens": 1280,
+          "calls": 1
+        },
+        "reviewer::plan_task": {
+          "tokens": 1390,
+          "calls": 1
+        },
+        "architect::implement_task": {
+          "tokens": 1500,
+          "calls": 1
+        },
+        "engineer::review_pr": {
+          "tokens": 1610,
+          "calls": 1
+        }
+      },
+      "tasks": {
+        "TASK-103": {
+          "taskId": "TASK-103",
+          "tokens": 840,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 840,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "debug_issue": {
+              "tokens": 840,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 840,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::debug_issue": {
+              "tokens": 840,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-104": {
+          "taskId": "TASK-104",
+          "tokens": 950,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 950,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "plan_task": {
+              "tokens": 950,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 950,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::plan_task": {
+              "tokens": 950,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-105": {
+          "taskId": "TASK-105",
+          "tokens": 1060,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 1060,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "implement_task": {
+              "tokens": 1060,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 1060,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::implement_task": {
+              "tokens": 1060,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-106": {
+          "taskId": "TASK-106",
+          "tokens": 1170,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1170,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "review_pr": {
+              "tokens": 1170,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1170,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::review_pr": {
+              "tokens": 1170,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-107": {
+          "taskId": "TASK-107",
+          "tokens": 1280,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1280,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "debug_issue": {
+              "tokens": 1280,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1280,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::debug_issue": {
+              "tokens": 1280,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-108": {
+          "taskId": "TASK-108",
+          "tokens": 1390,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 1390,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "plan_task": {
+              "tokens": 1390,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 1390,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::plan_task": {
+              "tokens": 1390,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-109": {
+          "taskId": "TASK-109",
+          "tokens": 1500,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1500,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "implement_task": {
+              "tokens": 1500,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1500,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::implement_task": {
+              "tokens": 1500,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-110": {
+          "taskId": "TASK-110",
+          "tokens": 1610,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1610,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "review_pr": {
+              "tokens": 1610,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1610,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::review_pr": {
+              "tokens": 1610,
+              "calls": 1
+            }
+          }
+        }
+      }
+    },
+    "2026-02-15": {
+      "date": "2026-02-15",
+      "tokens": 10040,
+      "calls": 8,
+      "byRole": {
+        "engineer": {
+          "tokens": 3600,
+          "calls": 3
+        },
+        "reviewer": {
+          "tokens": 3930,
+          "calls": 3
+        },
+        "architect": {
+          "tokens": 2510,
+          "calls": 2
+        }
+      },
+      "byAction": {
+        "plan_task": {
+          "tokens": 2180,
+          "calls": 2
+        },
+        "implement_task": {
+          "tokens": 2400,
+          "calls": 2
+        },
+        "review_pr": {
+          "tokens": 2620,
+          "calls": 2
+        },
+        "debug_issue": {
+          "tokens": 2840,
+          "calls": 2
+        }
+      },
+      "byRoleAction": {
+        "engineer::plan_task": {
+          "tokens": 870,
+          "calls": 1
+        },
+        "reviewer::implement_task": {
+          "tokens": 980,
+          "calls": 1
+        },
+        "architect::review_pr": {
+          "tokens": 1090,
+          "calls": 1
+        },
+        "engineer::debug_issue": {
+          "tokens": 1200,
+          "calls": 1
+        },
+        "reviewer::plan_task": {
+          "tokens": 1310,
+          "calls": 1
+        },
+        "architect::implement_task": {
+          "tokens": 1420,
+          "calls": 1
+        },
+        "engineer::review_pr": {
+          "tokens": 1530,
+          "calls": 1
+        },
+        "reviewer::debug_issue": {
+          "tokens": 1640,
+          "calls": 1
+        }
+      },
+      "tasks": {
+        "TASK-104": {
+          "taskId": "TASK-104",
+          "tokens": 870,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 870,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "plan_task": {
+              "tokens": 870,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 870,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::plan_task": {
+              "tokens": 870,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-105": {
+          "taskId": "TASK-105",
+          "tokens": 980,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 980,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "implement_task": {
+              "tokens": 980,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 980,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::implement_task": {
+              "tokens": 980,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-106": {
+          "taskId": "TASK-106",
+          "tokens": 1090,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1090,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "review_pr": {
+              "tokens": 1090,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1090,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::review_pr": {
+              "tokens": 1090,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-107": {
+          "taskId": "TASK-107",
+          "tokens": 1200,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1200,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "debug_issue": {
+              "tokens": 1200,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1200,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::debug_issue": {
+              "tokens": 1200,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-108": {
+          "taskId": "TASK-108",
+          "tokens": 1310,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 1310,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "plan_task": {
+              "tokens": 1310,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 1310,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::plan_task": {
+              "tokens": 1310,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-109": {
+          "taskId": "TASK-109",
+          "tokens": 1420,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1420,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "implement_task": {
+              "tokens": 1420,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1420,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::implement_task": {
+              "tokens": 1420,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-110": {
+          "taskId": "TASK-110",
+          "tokens": 1530,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1530,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "review_pr": {
+              "tokens": 1530,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1530,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::review_pr": {
+              "tokens": 1530,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-111": {
+          "taskId": "TASK-111",
+          "tokens": 1640,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 1640,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "debug_issue": {
+              "tokens": 1640,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 1640,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::debug_issue": {
+              "tokens": 1640,
+              "calls": 1
+            }
+          }
+        }
+      }
+    },
+    "2026-02-14": {
+      "date": "2026-02-14",
+      "tokens": 10280,
+      "calls": 8,
+      "byRole": {
+        "reviewer": {
+          "tokens": 3690,
+          "calls": 3
+        },
+        "architect": {
+          "tokens": 4020,
+          "calls": 3
+        },
+        "engineer": {
+          "tokens": 2570,
+          "calls": 2
+        }
+      },
+      "byAction": {
+        "implement_task": {
+          "tokens": 2240,
+          "calls": 2
+        },
+        "review_pr": {
+          "tokens": 2460,
+          "calls": 2
+        },
+        "debug_issue": {
+          "tokens": 2680,
+          "calls": 2
+        },
+        "plan_task": {
+          "tokens": 2900,
+          "calls": 2
+        }
+      },
+      "byRoleAction": {
+        "reviewer::implement_task": {
+          "tokens": 900,
+          "calls": 1
+        },
+        "architect::review_pr": {
+          "tokens": 1010,
+          "calls": 1
+        },
+        "engineer::debug_issue": {
+          "tokens": 1120,
+          "calls": 1
+        },
+        "reviewer::plan_task": {
+          "tokens": 1230,
+          "calls": 1
+        },
+        "architect::implement_task": {
+          "tokens": 1340,
+          "calls": 1
+        },
+        "engineer::review_pr": {
+          "tokens": 1450,
+          "calls": 1
+        },
+        "reviewer::debug_issue": {
+          "tokens": 1560,
+          "calls": 1
+        },
+        "architect::plan_task": {
+          "tokens": 1670,
+          "calls": 1
+        }
+      },
+      "tasks": {
+        "TASK-105": {
+          "taskId": "TASK-105",
+          "tokens": 900,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 900,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "implement_task": {
+              "tokens": 900,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 900,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::implement_task": {
+              "tokens": 900,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-106": {
+          "taskId": "TASK-106",
+          "tokens": 1010,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1010,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "review_pr": {
+              "tokens": 1010,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1010,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::review_pr": {
+              "tokens": 1010,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-107": {
+          "taskId": "TASK-107",
+          "tokens": 1120,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1120,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "debug_issue": {
+              "tokens": 1120,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1120,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::debug_issue": {
+              "tokens": 1120,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-108": {
+          "taskId": "TASK-108",
+          "tokens": 1230,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 1230,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "plan_task": {
+              "tokens": 1230,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 1230,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::plan_task": {
+              "tokens": 1230,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-109": {
+          "taskId": "TASK-109",
+          "tokens": 1340,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1340,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "implement_task": {
+              "tokens": 1340,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1340,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::implement_task": {
+              "tokens": 1340,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-110": {
+          "taskId": "TASK-110",
+          "tokens": 1450,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1450,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "review_pr": {
+              "tokens": 1450,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1450,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::review_pr": {
+              "tokens": 1450,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-111": {
+          "taskId": "TASK-111",
+          "tokens": 1560,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 1560,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "debug_issue": {
+              "tokens": 1560,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 1560,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::debug_issue": {
+              "tokens": 1560,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-100": {
+          "taskId": "TASK-100",
+          "tokens": 1670,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1670,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "plan_task": {
+              "tokens": 1670,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1670,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::plan_task": {
+              "tokens": 1670,
+              "calls": 1
+            }
+          }
+        }
+      }
+    },
+    "2026-02-13": {
+      "date": "2026-02-13",
+      "tokens": 10520,
+      "calls": 8,
+      "byRole": {
+        "architect": {
+          "tokens": 3780,
+          "calls": 3
+        },
+        "engineer": {
+          "tokens": 4110,
+          "calls": 3
+        },
+        "reviewer": {
+          "tokens": 2630,
+          "calls": 2
+        }
+      },
+      "byAction": {
+        "review_pr": {
+          "tokens": 2300,
+          "calls": 2
+        },
+        "debug_issue": {
+          "tokens": 2520,
+          "calls": 2
+        },
+        "plan_task": {
+          "tokens": 2740,
+          "calls": 2
+        },
+        "implement_task": {
+          "tokens": 2960,
+          "calls": 2
+        }
+      },
+      "byRoleAction": {
+        "architect::review_pr": {
+          "tokens": 930,
+          "calls": 1
+        },
+        "engineer::debug_issue": {
+          "tokens": 1040,
+          "calls": 1
+        },
+        "reviewer::plan_task": {
+          "tokens": 1150,
+          "calls": 1
+        },
+        "architect::implement_task": {
+          "tokens": 1260,
+          "calls": 1
+        },
+        "engineer::review_pr": {
+          "tokens": 1370,
+          "calls": 1
+        },
+        "reviewer::debug_issue": {
+          "tokens": 1480,
+          "calls": 1
+        },
+        "architect::plan_task": {
+          "tokens": 1590,
+          "calls": 1
+        },
+        "engineer::implement_task": {
+          "tokens": 1700,
+          "calls": 1
+        }
+      },
+      "tasks": {
+        "TASK-106": {
+          "taskId": "TASK-106",
+          "tokens": 930,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 930,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "review_pr": {
+              "tokens": 930,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 930,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::review_pr": {
+              "tokens": 930,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-107": {
+          "taskId": "TASK-107",
+          "tokens": 1040,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1040,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "debug_issue": {
+              "tokens": 1040,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1040,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::debug_issue": {
+              "tokens": 1040,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-108": {
+          "taskId": "TASK-108",
+          "tokens": 1150,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 1150,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "plan_task": {
+              "tokens": 1150,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 1150,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::plan_task": {
+              "tokens": 1150,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-109": {
+          "taskId": "TASK-109",
+          "tokens": 1260,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1260,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "implement_task": {
+              "tokens": 1260,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1260,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::implement_task": {
+              "tokens": 1260,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-110": {
+          "taskId": "TASK-110",
+          "tokens": 1370,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1370,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "review_pr": {
+              "tokens": 1370,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1370,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::review_pr": {
+              "tokens": 1370,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-111": {
+          "taskId": "TASK-111",
+          "tokens": 1480,
+          "calls": 1,
+          "byRole": {
+            "reviewer": {
+              "tokens": 1480,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "debug_issue": {
+              "tokens": 1480,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "claude-sonnet": {
+              "tokens": 1480,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "reviewer::debug_issue": {
+              "tokens": 1480,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-100": {
+          "taskId": "TASK-100",
+          "tokens": 1590,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 1590,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "plan_task": {
+              "tokens": 1590,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4.1": {
+              "tokens": 1590,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::plan_task": {
+              "tokens": 1590,
+              "calls": 1
+            }
+          }
+        },
+        "TASK-101": {
+          "taskId": "TASK-101",
+          "tokens": 1700,
+          "calls": 1,
+          "byRole": {
+            "engineer": {
+              "tokens": 1700,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "implement_task": {
+              "tokens": 1700,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "gpt-4o-mini": {
+              "tokens": 1700,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "engineer::implement_task": {
+              "tokens": 1700,
+              "calls": 1
+            }
+          }
+        }
+      }
+    },
+    "2026-02-20": {
+      "date": "2026-02-20",
+      "tokens": 848,
+      "calls": 3,
+      "byRole": {
+        "architect": {
+          "tokens": 848,
+          "calls": 3
+        }
+      },
+      "byAction": {
+        "slack_mention": {
+          "tokens": 848,
+          "calls": 3
+        }
+      },
+      "byRoleAction": {
+        "architect::slack_mention": {
+          "tokens": 848,
+          "calls": 3
+        }
+      },
+      "tasks": {
+        "C0ABQLYUE0K:1771568462.017499": {
+          "taskId": "C0ABQLYUE0K:1771568462.017499",
+          "tokens": 199,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 199,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 199,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 199,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 199,
+              "calls": 1
+            }
+          }
+        },
+        "C0ABQLYUE0K:1771571113.823129": {
+          "taskId": "C0ABQLYUE0K:1771571113.823129",
+          "tokens": 435,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 435,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 435,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 435,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 435,
+              "calls": 1
+            }
+          }
+        },
+        "C0ABQLYUE0K:1771572200.207789": {
+          "taskId": "C0ABQLYUE0K:1771572200.207789",
+          "tokens": 214,
+          "calls": 1,
+          "byRole": {
+            "architect": {
+              "tokens": 214,
+              "calls": 1
+            }
+          },
+          "byAction": {
+            "slack_mention": {
+              "tokens": 214,
+              "calls": 1
+            }
+          },
+          "byModel": {
+            "arcee-ai/trinity-large-preview:free": {
+              "tokens": 214,
+              "calls": 1
+            }
+          },
+          "byRoleAction": {
+            "architect::slack_mention": {
+              "tokens": 214,
+              "calls": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

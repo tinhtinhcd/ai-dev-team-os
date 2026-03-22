@@ -4,11 +4,7 @@ import path from "path";
 export type CallRole = "architect" | "engineer" | "reviewer";
 export type DateRange = "today" | "last7";
 
-type Bucket = {
-  tokens: number;
-  calls: number;
-};
-
+type Bucket = { tokens: number; calls: number };
 type Buckets = Record<string, Bucket>;
 
 type TaskAggregate = {
@@ -38,19 +34,19 @@ type UsageCache = {
   days: Record<string, DayAggregate>;
 };
 
-type AiCallLog = {
+type IngestedLog = {
   ts: string;
   role: CallRole;
   action: string;
-  channel_id: string;
-  thread_ts: string;
   task_id: string;
   model: string;
-  prompt_tokens: number;
-  completion_tokens: number;
   total_tokens: number;
-  latency_ms: number;
   success: boolean;
+  channel_id: string | null;
+  thread_ts: string | null;
+  prompt_tokens: number | null;
+  completion_tokens: number | null;
+  latency_ms: number | null;
   error_code: string | null;
   cache_hit: boolean | null;
 };
@@ -78,72 +74,95 @@ export type ObservabilityData = {
     byRole: Buckets;
     byAction: Buckets;
   };
-  last7Days: Array<{
-    date: string;
-    tokens: number;
-    calls: number;
-  }>;
+  last7Days: Array<{ date: string; tokens: number; calls: number }>;
   topTasksToday: TopTask[];
   availableActions: string[];
+  logState: "ready" | "missing_prod";
 };
 
 const LOGS_DIR = path.join(process.cwd(), "logs");
 const CALLS_LOG_PATH = path.join(LOGS_DIR, "ai_calls.jsonl");
 const CACHE_PATH = path.join(LOGS_DIR, "usage_cache.json");
-const CACHE_VERSION = 1;
+const CACHE_VERSION = 2;
 const ROLES: CallRole[] = ["architect", "engineer", "reviewer"];
 
-const SAMPLE_MODELS = ["gpt-4.1", "gpt-4o-mini", "claude-sonnet"];
-const SAMPLE_ACTIONS = ["plan_task", "implement_task", "review_pr", "debug_issue"];
-const SAMPLE_CHANNELS = ["C-ENG", "C-ARCH", "C-REV"];
-
-function ensureLogsReady(): void {
+function ensureLogsDirectory(): void {
   if (!fs.existsSync(LOGS_DIR)) {
     fs.mkdirSync(LOGS_DIR, { recursive: true });
   }
+}
 
-  if (fs.existsSync(CALLS_LOG_PATH)) {
-    return;
-  }
+function maybeSeedDevLogs(): void {
+  if (process.env.NODE_ENV !== "development") return;
+  const now = Date.now();
+  const seed = [
+    {
+      ts: new Date(now - 30 * 60 * 1000).toISOString(),
+      role: "architect",
+      action: "plan_task",
+      channel_id: "C-ARCH",
+      thread_ts: "seed.1",
+      task_id: "seed:plan",
+      model: "gpt-4.1",
+      prompt_tokens: 800,
+      completion_tokens: 1200,
+      total_tokens: 2000,
+      latency_ms: 640,
+      success: true,
+      error_code: null,
+      cache_hit: null,
+    },
+    {
+      ts: new Date(now - 20 * 60 * 1000).toISOString(),
+      role: "engineer",
+      action: "implement_task",
+      channel_id: "C-ENG",
+      thread_ts: "seed.2",
+      task_id: "seed:impl",
+      model: "gpt-4o-mini",
+      prompt_tokens: 900,
+      completion_tokens: 1700,
+      total_tokens: 2600,
+      latency_ms: 820,
+      success: true,
+      error_code: null,
+      cache_hit: false,
+    },
+    {
+      ts: new Date(now - 10 * 60 * 1000).toISOString(),
+      role: "reviewer",
+      action: "review_pr",
+      channel_id: "C-REV",
+      thread_ts: "seed.3",
+      task_id: "seed:review",
+      model: "claude-sonnet",
+      prompt_tokens: 600,
+      completion_tokens: 900,
+      total_tokens: 1500,
+      latency_ms: 560,
+      success: true,
+      error_code: null,
+      cache_hit: true,
+    },
+  ];
+  fs.writeFileSync(
+    CALLS_LOG_PATH,
+    `${seed.map((row) => JSON.stringify(row)).join("\n")}\n`,
+    "utf-8"
+  );
+}
 
+function ensureLogSource(): { state: "ready" | "missing_prod" } {
+  ensureLogsDirectory();
+  if (fs.existsSync(CALLS_LOG_PATH)) return { state: "ready" };
   if (process.env.NODE_ENV === "development") {
-    const now = new Date();
-    const lines: string[] = [];
-    for (let dayOffset = 0; dayOffset < 7; dayOffset += 1) {
-      for (let i = 0; i < 8; i += 1) {
-        const ts = new Date(
-          now.getTime() - dayOffset * 24 * 60 * 60 * 1000 - i * 15 * 60 * 1000
-        ).toISOString();
-        const role = ROLES[(i + dayOffset) % ROLES.length];
-        const action = SAMPLE_ACTIONS[(i + dayOffset) % SAMPLE_ACTIONS.length];
-        const promptTokens = 250 + i * 40 + dayOffset * 10;
-        const completionTokens = 500 + i * 70 + dayOffset * 20;
-        const totalTokens = promptTokens + completionTokens;
-        const taskId = `TASK-${100 + ((i + dayOffset) % 12)}`;
-        const entry: AiCallLog = {
-          ts,
-          role,
-          action,
-          channel_id: SAMPLE_CHANNELS[(i + dayOffset) % SAMPLE_CHANNELS.length],
-          thread_ts: `${Math.floor(now.getTime() / 1000)}.${dayOffset}${i}`,
-          task_id: taskId,
-          model: SAMPLE_MODELS[(i + dayOffset) % SAMPLE_MODELS.length],
-          prompt_tokens: promptTokens,
-          completion_tokens: completionTokens,
-          total_tokens: totalTokens,
-          latency_ms: 400 + i * 35,
-          success: i % 6 !== 0,
-          error_code: i % 6 === 0 ? "RATE_LIMIT" : null,
-          cache_hit: i % 4 === 0,
-        };
-        lines.push(JSON.stringify(entry));
-      }
+    maybeSeedDevLogs();
+    if (!fs.existsSync(CALLS_LOG_PATH)) {
+      fs.writeFileSync(CALLS_LOG_PATH, "", "utf-8");
     }
-    fs.writeFileSync(CALLS_LOG_PATH, `${lines.join("\n")}\n`, "utf-8");
-    return;
+    return { state: "ready" };
   }
-
-  fs.writeFileSync(CALLS_LOG_PATH, "", "utf-8");
+  return { state: "missing_prod" };
 }
 
 function emptyBucket(): Bucket {
@@ -175,41 +194,65 @@ function emptyTaskAggregate(taskId: string): TaskAggregate {
 }
 
 function addToBuckets(buckets: Buckets, key: string, tokens: number): void {
-  if (!buckets[key]) {
-    buckets[key] = emptyBucket();
-  }
+  if (!buckets[key]) buckets[key] = emptyBucket();
   buckets[key].tokens += tokens;
   buckets[key].calls += 1;
 }
 
-function toUtcDay(isoTs: string): string | null {
-  const date = new Date(isoTs);
-  if (Number.isNaN(date.getTime())) {
-    return null;
-  }
+function toUtcDay(ts: string): string | null {
+  const date = new Date(ts);
+  if (Number.isNaN(date.getTime())) return null;
   return date.toISOString().slice(0, 10);
 }
 
-function parseLine(line: string): AiCallLog | null {
+function normalizeOptionalString(value: unknown): string | null {
+  return typeof value === "string" ? value : null;
+}
+
+function normalizeOptionalNumber(value: unknown): number | null {
+  return typeof value === "number" ? value : null;
+}
+
+function normalizeOptionalBoolean(value: unknown): boolean | null {
+  return typeof value === "boolean" ? value : null;
+}
+
+function parseLine(line: string): IngestedLog | null {
   try {
-    const parsed = JSON.parse(line) as Partial<AiCallLog>;
+    const parsed = JSON.parse(line) as Record<string, unknown>;
+    const ts = parsed.ts;
+    const role = parsed.role;
+    const totalTokens = parsed.total_tokens;
+    const success = parsed.success;
+
     if (
-      !parsed ||
-      typeof parsed.ts !== "string" ||
-      typeof parsed.role !== "string" ||
-      !ROLES.includes(parsed.role as CallRole) ||
-      typeof parsed.action !== "string" ||
-      typeof parsed.task_id !== "string" ||
-      typeof parsed.model !== "string" ||
-      typeof parsed.prompt_tokens !== "number" ||
-      typeof parsed.completion_tokens !== "number" ||
-      typeof parsed.total_tokens !== "number" ||
-      typeof parsed.latency_ms !== "number" ||
-      typeof parsed.success !== "boolean"
+      typeof ts !== "string" ||
+      typeof role !== "string" ||
+      !ROLES.includes(role as CallRole) ||
+      typeof totalTokens !== "number" ||
+      typeof success !== "boolean"
     ) {
       return null;
     }
-    return parsed as AiCallLog;
+
+    if (!toUtcDay(ts)) return null;
+
+    return {
+      ts,
+      role: role as CallRole,
+      total_tokens: totalTokens,
+      success,
+      action: typeof parsed.action === "string" ? parsed.action : "unknown",
+      task_id: typeof parsed.task_id === "string" ? parsed.task_id : "unknown",
+      model: typeof parsed.model === "string" ? parsed.model : "unknown",
+      channel_id: normalizeOptionalString(parsed.channel_id),
+      thread_ts: normalizeOptionalString(parsed.thread_ts),
+      prompt_tokens: normalizeOptionalNumber(parsed.prompt_tokens),
+      completion_tokens: normalizeOptionalNumber(parsed.completion_tokens),
+      latency_ms: normalizeOptionalNumber(parsed.latency_ms),
+      error_code: normalizeOptionalString(parsed.error_code),
+      cache_hit: normalizeOptionalBoolean(parsed.cache_hit),
+    };
   } catch {
     return null;
   }
@@ -217,33 +260,22 @@ function parseLine(line: string): AiCallLog | null {
 
 function loadCache(): UsageCache {
   if (!fs.existsSync(CACHE_PATH)) {
-    return {
-      version: CACHE_VERSION,
-      lastProcessedByteOffset: 0,
-      pendingLine: "",
-      days: {},
-    };
+    return { version: CACHE_VERSION, lastProcessedByteOffset: 0, pendingLine: "", days: {} };
   }
-
   try {
     const parsed = JSON.parse(fs.readFileSync(CACHE_PATH, "utf-8")) as UsageCache;
     if (
-      !parsed ||
       parsed.version !== CACHE_VERSION ||
       typeof parsed.lastProcessedByteOffset !== "number" ||
       typeof parsed.pendingLine !== "string" ||
+      !parsed.days ||
       typeof parsed.days !== "object"
     ) {
-      throw new Error("Invalid cache shape.");
+      throw new Error("bad cache");
     }
     return parsed;
   } catch {
-    return {
-      version: CACHE_VERSION,
-      lastProcessedByteOffset: 0,
-      pendingLine: "",
-      days: {},
-    };
+    return { version: CACHE_VERSION, lastProcessedByteOffset: 0, pendingLine: "", days: {} };
   }
 }
 
@@ -254,34 +286,24 @@ function persistCache(cache: UsageCache): void {
 function readBytesFromOffset(filePath: string, offset: number): { text: string; size: number } {
   const stats = fs.statSync(filePath);
   const size = stats.size;
-
-  if (size <= offset) {
-    return { text: "", size };
-  }
+  if (size <= offset) return { text: "", size };
 
   const fd = fs.openSync(filePath, "r");
   try {
     const length = size - offset;
     const buffer = Buffer.alloc(length);
     const bytesRead = fs.readSync(fd, buffer, 0, length, offset);
-    return {
-      text: buffer.toString("utf-8", 0, bytesRead),
-      size,
-    };
+    return { text: buffer.toString("utf-8", 0, bytesRead), size };
   } finally {
     fs.closeSync(fd);
   }
 }
 
-function ingestLog(cache: UsageCache, log: AiCallLog): void {
+function ingestLog(cache: UsageCache, log: IngestedLog): void {
   const dayKey = toUtcDay(log.ts);
-  if (!dayKey) {
-    return;
-  }
+  if (!dayKey) return;
 
-  if (!cache.days[dayKey]) {
-    cache.days[dayKey] = emptyDayAggregate(dayKey);
-  }
+  if (!cache.days[dayKey]) cache.days[dayKey] = emptyDayAggregate(dayKey);
   const day = cache.days[dayKey];
   const roleActionKey = `${log.role}::${log.action}`;
 
@@ -291,9 +313,7 @@ function ingestLog(cache: UsageCache, log: AiCallLog): void {
   addToBuckets(day.byAction, log.action, log.total_tokens);
   addToBuckets(day.byRoleAction, roleActionKey, log.total_tokens);
 
-  if (!day.tasks[log.task_id]) {
-    day.tasks[log.task_id] = emptyTaskAggregate(log.task_id);
-  }
+  if (!day.tasks[log.task_id]) day.tasks[log.task_id] = emptyTaskAggregate(log.task_id);
   const task = day.tasks[log.task_id];
   task.tokens += log.total_tokens;
   task.calls += 1;
@@ -303,25 +323,19 @@ function ingestLog(cache: UsageCache, log: AiCallLog): void {
   addToBuckets(task.byRoleAction, roleActionKey, log.total_tokens);
 }
 
-function syncUsageCache(): UsageCache {
-  ensureLogsReady();
+function syncUsageCache(logState: "ready" | "missing_prod"): UsageCache {
+  if (logState === "missing_prod") {
+    return { version: CACHE_VERSION, lastProcessedByteOffset: 0, pendingLine: "", days: {} };
+  }
+
   let cache = loadCache();
   const fileSize = fs.statSync(CALLS_LOG_PATH).size;
-
-  // File rotated or truncated; rebuild cache from scratch.
   if (fileSize < cache.lastProcessedByteOffset) {
-    cache = {
-      version: CACHE_VERSION,
-      lastProcessedByteOffset: 0,
-      pendingLine: "",
-      days: {},
-    };
+    cache = { version: CACHE_VERSION, lastProcessedByteOffset: 0, pendingLine: "", days: {} };
   }
 
   const { text, size } = readBytesFromOffset(CALLS_LOG_PATH, cache.lastProcessedByteOffset);
-  if (!text && size === cache.lastProcessedByteOffset) {
-    return cache;
-  }
+  if (!text && size === cache.lastProcessedByteOffset) return cache;
 
   const combined = `${cache.pendingLine}${text}`;
   const lines = combined.split(/\r?\n/);
@@ -329,13 +343,9 @@ function syncUsageCache(): UsageCache {
 
   for (const rawLine of lines) {
     const line = rawLine.trim();
-    if (!line) {
-      continue;
-    }
+    if (!line) continue;
     const parsed = parseLine(line);
-    if (!parsed) {
-      continue;
-    }
+    if (!parsed) continue;
     ingestLog(cache, parsed);
   }
 
@@ -349,10 +359,7 @@ function getTodayUtcDateKey(): string {
 }
 
 function getDateKeys(range: DateRange): string[] {
-  if (range === "today") {
-    return [getTodayUtcDateKey()];
-  }
-
+  if (range === "today") return [getTodayUtcDateKey()];
   const keys: string[] = [];
   const now = new Date();
   for (let i = 6; i >= 0; i -= 1) {
@@ -372,26 +379,19 @@ function getFilteredBucket(
   role?: CallRole,
   action?: string
 ): Bucket {
-  if (role && action) {
-    return byRoleAction[`${role}::${action}`] ?? emptyBucket();
-  }
-  if (role) {
-    return byRole[role] ?? emptyBucket();
-  }
-  if (action) {
-    return byAction[action] ?? emptyBucket();
-  }
+  if (role && action) return byRoleAction[`${role}::${action}`] ?? emptyBucket();
+  if (role) return byRole[role] ?? emptyBucket();
+  if (action) return byAction[action] ?? emptyBucket();
   return { tokens, calls };
 }
 
 function sortBucketsDesc(buckets: Buckets): Buckets {
-  return Object.fromEntries(
-    Object.entries(buckets).sort((a, b) => b[1].tokens - a[1].tokens)
-  );
+  return Object.fromEntries(Object.entries(buckets).sort((a, b) => b[1].tokens - a[1].tokens));
 }
 
 export function getObservabilityData(filters: UsageFilters): ObservabilityData {
-  const cache = syncUsageCache();
+  const source = ensureLogSource();
+  const cache = syncUsageCache(source.state);
   const todayKey = getTodayUtcDateKey();
   const todayDay = cache.days[todayKey] ?? emptyDayAggregate(todayKey);
 
@@ -405,7 +405,7 @@ export function getObservabilityData(filters: UsageFilters): ObservabilityData {
     filters.action
   );
 
-  const todayByRole: Buckets =
+  const todayByRole =
     filters.action && !filters.role
       ? Object.fromEntries(
           ROLES.map((role) => [
@@ -415,7 +415,7 @@ export function getObservabilityData(filters: UsageFilters): ObservabilityData {
         )
       : todayDay.byRole;
 
-  const todayByAction: Buckets =
+  const todayByAction =
     filters.role && !filters.action
       ? Object.fromEntries(
           Object.keys(todayDay.byAction).map((action) => [
@@ -460,11 +460,7 @@ export function getObservabilityData(filters: UsageFilters): ObservabilityData {
       filters.role,
       filters.action
     );
-    return {
-      date,
-      tokens: filtered.tokens,
-      calls: filtered.calls,
-    };
+    return { date, tokens: filtered.tokens, calls: filtered.calls };
   });
 
   const selectedRangeDateKeys = getDateKeys(filters.range);
@@ -483,5 +479,6 @@ export function getObservabilityData(filters: UsageFilters): ObservabilityData {
     last7Days,
     topTasksToday,
     availableActions: Object.keys(todayDay.byAction).sort(),
+    logState: source.state,
   };
 }

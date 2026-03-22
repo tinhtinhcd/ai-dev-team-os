@@ -7,9 +7,15 @@
     "dev:webpack": "next dev --webpack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "log:test": "tsx scripts/append-test-log.ts",
+    "slack:architect": "tsx src/slack/architect_bot.ts",
+    "slack:listen": "node scripts/slack-listen.js",
+    "slack:worker": "node scripts/slack-worker.js"
   },
   "dependencies": {
+    "@slack/bolt": "^4.6.0",
+    "@slack/web-api": "^7.14.1",
     "@tailwindcss/typography": "^0.5.19",
     "next": "16.1.6",
     "react": "19.2.3",
@@ -24,6 +30,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

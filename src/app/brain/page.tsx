@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import { loadBrainFile, saveBrainFile } from "./actions";
 import type { BrainFile } from "@/lib/brain";
@@ -37,6 +38,7 @@ export default function BrainPage() {
   );
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadFile(selected);
   }, [selected, loadFile]);
 
@@ -61,6 +63,12 @@ export default function BrainPage() {
           AI Dev Team OS · Brain
         </h1>
         <div className="flex items-center gap-3">
+          <Link
+            href="/observability"
+            className="rounded-lg border border-zinc-700 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-800"
+          >
+            Observability
+          </Link>
           <span
             className={`text-sm font-medium ${
               status === "saved"
