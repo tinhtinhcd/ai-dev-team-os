@@ -12,6 +12,9 @@ Event-driven AI development team: Linear manages tasks, Cursor executes code, Sl
 ## Setup Guides
 
 - [Phase 1 MVP Task Breakdown](docs/PHASE1_MVP_LINEAR_TASK_BREAKDOWN.md) — Linear task breakdown (TIN-17), execution order, @Leo review
+- [Architecture](ARCHITECTURE.md) — System structure, component boundaries, deployment model
+- [Event Flow](EVENT_FLOW.md) — Event lifecycle, routing, reliability, and replay behavior
+- [Engineering Decisions](ENGINEERING_DECISIONS.md) — Design decisions, trade-offs, and production limitations
 - **Google OAuth** — Sign in with Google. Set `AUTH_SECRET` (generate with `openssl rand -base64 32`), `GOOGLE_CLIENT_ID`, and `GOOGLE_CLIENT_SECRET` in `.env`. Create OAuth credentials at [Google Cloud Console](https://console.cloud.google.com/) and add redirect URI `http://localhost:3000/api/auth/callback/google`.
 - [Slack App Setup](docs/SLACK_APP_SETUP.md) — Scopes, events, thread-only replies, target channel `#team-leo`
 - [Linear Webhook Setup](integrations/linear/WEBHOOK_SETUP.md) — Webhook config and thread mapping
